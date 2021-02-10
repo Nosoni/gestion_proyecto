@@ -27,6 +27,8 @@ import Index from "views/Index.js";
 import LandingPage from "views/examples/LandingPage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
+import Login from "./views/Login.js";
+import Inicio from "./views/Inicio.js";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -43,6 +45,14 @@ ReactDOM.render(
       <Route
         path="/profile-page"
         render={(props) => <ProfilePage {...props} />}
+      />
+      <Route
+        path="/login"
+        render={(props) => <Login {...props} />}
+      />
+      <Route
+        path="/inicio"
+        render={(props) => <Inicio {...props} />}
       />
       <Redirect from="/" to="/components" />
     </Switch>
