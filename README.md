@@ -1,14 +1,7 @@
 ## Table of Contents
 
-* [Versions](#versions)
-* [PRO Versions](#pro-versions)
-* [Demo](#demo)
-* [Quick Start](#quick-start)
 * [Documentation](#documentation)
-* [File Structure](#file-structure)
-* [Browser Support](#browser-support)
 * [Resources](#resources)
-* [Reporting Issues](#reporting-issues)
 * [Licensing](#licensing)
 * [Useful Links](#useful-links)
 

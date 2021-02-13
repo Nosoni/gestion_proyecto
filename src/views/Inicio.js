@@ -13,7 +13,6 @@ export default function Inicio() {
   }, []);
   return (
     <>
-      <IndexNavbar />
       <div className="wrapper">
         <div className="page-header header-filter">
           <div className="squares square1" />
