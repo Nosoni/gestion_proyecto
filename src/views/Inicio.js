@@ -22,7 +22,7 @@ export default function Inicio(props) {
                 {/* Card stats */}
                 <Row>
                   <Col lg="4" xl="4">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={()=>window.print()}>
                       <CardBody>
                         <Row>
                           <div className="col">
