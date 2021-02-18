@@ -23,13 +23,14 @@ import "assets/css/nucleo-icons.css";
 import "assets/scss/blk-design-system-react.scss?v=1.2.0";
 import "assets/demo/demo.css";
 
-import Index from "./views/Index.js";
+import Index from "./views/paginas/Index.js";
 import LandingPage from "./views/examples/LandingPage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import ProfilePage from "./views/examples/ProfilePage.js";
-import Login from "./views/Login.js";
-import Inicio from "./views/Inicio.js";
-import NotFound from "./views/examples/NotFound.js";
+import Login from "./views/paginas/Login.js";
+import Inicio from "./views/paginas/Inicio.js";
+import NotFound from "./views/paginas/NotFound.js";
+import Usuarios from "./views/paginas/Usuarios.js";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -54,6 +55,10 @@ ReactDOM.render(
       <Route
         path="/inicio"
         render={(props) => <Inicio {...props} />}
+      />
+      <Route
+        path="/usuarios"
+        render={(props) => <Usuarios {...props} />}
       />
       <Route
         path="/404"
