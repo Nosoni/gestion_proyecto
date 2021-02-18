@@ -3,7 +3,7 @@ import { Container, Col, Card, CardBody, Row, CardTitle } from "reactstrap";
 
 import BarraNavegacion from "../components/Navbars/BarraNavegacion"
 
-export default function Inicio() {
+export default function Inicio(props) {
   React.useEffect(() => {
     document.body.classList.toggle("index-page");
     // Specify how to clean up after this effect:
@@ -21,116 +21,69 @@ export default function Inicio() {
               <div className="header-body">
                 {/* Card stats */}
                 <Row>
-                  <Col lg="6" xl="3">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                  <Col lg="4" xl="4">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                       <CardBody>
                         <Row>
                           <div className="col">
-                            <CardTitle
-                              tag="h5"
-                              className="text-uppercase text-muted mb-0"
-                            >
-                              Traffic
-                        </CardTitle>
                             <span className="h2 font-weight-bold mb-0">
-                              350,897
-                        </span>
+                              Administración
+                            </span>
                           </div>
                           <Col className="col-auto">
                             <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                              <i className="fas fa-chart-bar" />
+                              <i className="fas fa-tasks"></i>
                             </div>
                           </Col>
                         </Row>
                         <p className="mt-3 mb-0 text-muted text-sm">
-                          <span className="text-success mr-2">
-                            <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                          <span className="text-nowrap">Since last month</span>
+                          <span className="text-nowrap">Módulo que permite la administración de</span>
+                          <span className="text-nowrap">usuarios y roles</span>
                         </p>
                       </CardBody>
                     </Card>
                   </Col>
-                  <Col lg="6" xl="3">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                  <Col lg="4" xl="4">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                       <CardBody>
                         <Row>
                           <div className="col">
-                            <CardTitle
-                              tag="h5"
-                              className="text-uppercase text-muted mb-0"
-                            >
-                              New users
-                        </CardTitle>
-                            <span className="h2 font-weight-bold mb-0">2,356</span>
+                            <span className="h2 font-weight-bold mb-0">
+                              Configuración
+                            </span>
                           </div>
                           <Col className="col-auto">
                             <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                              <i className="fas fa-chart-pie" />
+                              <i className="fas fa-user-cog" />
                             </div>
                           </Col>
                         </Row>
                         <p className="mt-3 mb-0 text-muted text-sm">
-                          <span className="text-danger mr-2">
-                            <i className="fas fa-arrow-down" /> 3.48%
-                      </span>{" "}
-                          <span className="text-nowrap">Since last week</span>
+                          <span className="text-nowrap"> Módulo que permite la generación de líneas bases</span>
+                          <span className="text-nowrap"> </span>
                         </p>
                       </CardBody>
                     </Card>
                   </Col>
-                  <Col lg="6" xl="3">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                  <Col lg="4" xl="4">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                       <CardBody>
                         <Row>
                           <div className="col">
-                            <CardTitle
-                              tag="h5"
-                              className="text-uppercase text-muted mb-0"
-                            >
-                              Sales
-                        </CardTitle>
-                            <span className="h2 font-weight-bold mb-0">924</span>
+                            <span className="h2 font-weight-bold mb-0">
+                              Desarrollo
+                            </span>
+                            <span></span>
                           </div>
                           <Col className="col-auto">
                             <div className="icon icon-shape bg-dark text-white rounded-circle shadow">
-                              <i className="fas fa-users" />
+                              <i className="fas fa-terminal"></i>
                             </div>
                           </Col>
                         </Row>
                         <p className="mt-3 mb-0 text-muted text-sm">
-                          <span className="text-warning mr-2">
-                            <i className="fas fa-arrow-down" /> 1.10%
-                      </span>{" "}
-                          <span className="text-nowrap">Since yesterday</span>
-                        </p>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg="6" xl="3">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
-                      <CardBody>
-                        <Row>
-                          <div className="col">
-                            <CardTitle
-                              tag="h5"
-                              className="text-uppercase text-muted mb-0"
-                            >
-                              Performance
-                        </CardTitle>
-                            <span className="h2 font-weight-bold mb-0">49,65%</span>
-                          </div>
-                          <Col className="col-auto">
-                            <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                              <i className="fas fa-percent" />
-                            </div>
-                          </Col>
-                        </Row>
-                        <p className="mt-3 mb-0 text-muted text-sm">
-                          <span className="text-success mr-2">
-                            <i className="fas fa-arrow-up" /> 12%
-                      </span>{" "}
-                          <span className="text-nowrap">Since last month</span>
+                          <span className="text-nowrap">Módulo que administra todos los elementos</span>
+                          <span className="text-nowrap">de los productos</span>
                         </p>
                       </CardBody>
                     </Card>

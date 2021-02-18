@@ -24,11 +24,12 @@ import "assets/scss/blk-design-system-react.scss?v=1.2.0";
 import "assets/demo/demo.css";
 
 import Index from "./views/Index.js";
-import LandingPage from "views/examples/LandingPage.js";
+import LandingPage from "./views/examples/LandingPage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import ProfilePage from "./views/examples/ProfilePage.js";
 import Login from "./views/Login.js";
 import Inicio from "./views/Inicio.js";
+import NotFound from "./views/examples/NotFound.js";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -53,6 +54,10 @@ ReactDOM.render(
       <Route
         path="/inicio"
         render={(props) => <Inicio {...props} />}
+      />
+      <Route
+        path="/404"
+        render={(props) => <NotFound {...props} />}
       />
       <Redirect from="/" to="/components" />
     </Switch>
