@@ -1,7 +1,7 @@
 import React from "react";
-import { Container } from "reactstrap";
+import { Container, Col, Card, CardBody, Row, CardTitle } from "reactstrap";
 
-import IndexNavbar from "../components/Navbars/IndexNavbar"
+import BarraNavegacion from "../components/Navbars/BarraNavegacion"
 
 export default function Inicio() {
   React.useEffect(() => {
@@ -13,21 +13,143 @@ export default function Inicio() {
   }, []);
   return (
     <>
+      <BarraNavegacion />
       <div className="wrapper">
         <div className="page-header header-filter">
-          <div className="squares square1" />
-          <div className="squares square2" />
+          <div className="header bg-gradient-info pb-8 pt-md pt-md-8">
+            <Container fluid>
+              <div className="header-body">
+                {/* Card stats */}
+                <Row>
+                  <Col lg="6" xl="3">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                      <CardBody>
+                        <Row>
+                          <div className="col">
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              Traffic
+                        </CardTitle>
+                            <span className="h2 font-weight-bold mb-0">
+                              350,897
+                        </span>
+                          </div>
+                          <Col className="col-auto">
+                            <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                              <i className="fas fa-chart-bar" />
+                            </div>
+                          </Col>
+                        </Row>
+                        <p className="mt-3 mb-0 text-muted text-sm">
+                          <span className="text-success mr-2">
+                            <i className="fa fa-arrow-up" /> 3.48%
+                      </span>{" "}
+                          <span className="text-nowrap">Since last month</span>
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg="6" xl="3">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                      <CardBody>
+                        <Row>
+                          <div className="col">
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              New users
+                        </CardTitle>
+                            <span className="h2 font-weight-bold mb-0">2,356</span>
+                          </div>
+                          <Col className="col-auto">
+                            <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                              <i className="fas fa-chart-pie" />
+                            </div>
+                          </Col>
+                        </Row>
+                        <p className="mt-3 mb-0 text-muted text-sm">
+                          <span className="text-danger mr-2">
+                            <i className="fas fa-arrow-down" /> 3.48%
+                      </span>{" "}
+                          <span className="text-nowrap">Since last week</span>
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg="6" xl="3">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                      <CardBody>
+                        <Row>
+                          <div className="col">
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              Sales
+                        </CardTitle>
+                            <span className="h2 font-weight-bold mb-0">924</span>
+                          </div>
+                          <Col className="col-auto">
+                            <div className="icon icon-shape bg-dark text-white rounded-circle shadow">
+                              <i className="fas fa-users" />
+                            </div>
+                          </Col>
+                        </Row>
+                        <p className="mt-3 mb-0 text-muted text-sm">
+                          <span className="text-warning mr-2">
+                            <i className="fas fa-arrow-down" /> 1.10%
+                      </span>{" "}
+                          <span className="text-nowrap">Since yesterday</span>
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg="6" xl="3">
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white">
+                      <CardBody>
+                        <Row>
+                          <div className="col">
+                            <CardTitle
+                              tag="h5"
+                              className="text-uppercase text-muted mb-0"
+                            >
+                              Performance
+                        </CardTitle>
+                            <span className="h2 font-weight-bold mb-0">49,65%</span>
+                          </div>
+                          <Col className="col-auto">
+                            <div className="icon icon-shape bg-info text-white rounded-circle shadow">
+                              <i className="fas fa-percent" />
+                            </div>
+                          </Col>
+                        </Row>
+                        <p className="mt-3 mb-0 text-muted text-sm">
+                          <span className="text-success mr-2">
+                            <i className="fas fa-arrow-up" /> 12%
+                      </span>{" "}
+                          <span className="text-nowrap">Since last month</span>
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            </Container>
+          </div>
           <div className="squares square3" />
           <div className="squares square4" />
           <div className="squares square5" />
           <div className="squares square6" />
           <div className="squares square7" />
-          <Container>
+          <Container className="mt--7" fluid>
             <div className="content-center brand">
               <h1 className="h1-seo">BIENVENIDO</h1>
               <h3 className="d-none d-sm-block">
                 Esta es la pantalla de inicio
-          </h3>
+              </h3>
             </div>
           </Container>
         </div>
