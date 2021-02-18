@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Form, Card, Row, Col, FormGroup, Input, Button } from 'reactstrap'
-import { getUsuario } from '../api/usuario'
+import { getUsuario } from '../../api/usuario'
 
 export default function Login(props) {
   //variable local para objeto tipo usuario

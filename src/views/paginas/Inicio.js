@@ -1,7 +1,7 @@
 import React from "react";
-import { Container, Col, Card, CardBody, Row, CardTitle } from "reactstrap";
+import { Container, Col, Card, CardBody, Row } from "reactstrap";
 
-import BarraNavegacion from "../components/Navbars/BarraNavegacion"
+import BarraNavegacion from "../../components/Navbars/BarraNavegacion"
 
 export default function Inicio(props) {
   React.useEffect(() => {
@@ -11,6 +11,7 @@ export default function Inicio(props) {
       document.body.classList.toggle("index-page");
     };
   }, []);
+
   return (
     <>
       <BarraNavegacion />
@@ -22,7 +23,7 @@ export default function Inicio(props) {
                 {/* Card stats */}
                 <Row>
                   <Col lg="4" xl="4">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
+                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/usuarios")}>
                       <CardBody>
                         <Row>
                           <div className="col">
