@@ -6,6 +6,9 @@
     margin-bottom: 30px;
     box-shadow: $box-shadow;
 
+    &.card-log{
+      width: 50%;
+    }
 
     label {
       color: rgba($white, 0.6);

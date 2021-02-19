@@ -29,13 +29,13 @@ export default function Inicio(props) {
       <BarraNavegacion />
       <div className="wrapper">
         <div className="page-header header-filter">
-          <div className="header bg-gradient-info pb-8 pt-md pt-md-8">
+          <div className="header bg-gradient-info pb-8 pt-md">
             <Container fluid>
               <div className="header-body">
                 {/* Card stats */}
                 <Row>
                   <Col lg="4" xl="4">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white" >
+                    <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => generatePDF(tickets)}>
                       <CardBody>
                         <Row>
                           <div className="col">
@@ -45,7 +45,7 @@ export default function Inicio(props) {
                           </div>
                           <Col className="col-auto">
                             <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                              <i className="fas fa-download" onClick={() => generatePDF(tickets)}></i>
+                              <i className="fas fa-download"></i>
                             </div>
                           </Col>
                         </Row>

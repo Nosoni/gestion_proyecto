@@ -17,13 +17,13 @@ export default function Inicio(props) {
       <BarraNavegacion />
       <div className="wrapper">
         <div className="page-header header-filter">
-          <div className="header bg-gradient-info pb-8 pt-md pt-md-8">
+          <div className="header bg-gradient-info pb-8 pt-md">
             <Container fluid>
               <div className="header-body">
                 {/* Card stats */}
                 <Row>
                   <Col lg="4" xl="4">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/usuarios")}>
+                    <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/usuarios")}>
                       <CardBody>
                         <Row>
                           <div className="col">
@@ -45,7 +45,7 @@ export default function Inicio(props) {
                     </Card>
                   </Col>
                   <Col lg="4" xl="4">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
+                    <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                       <CardBody>
                         <Row>
                           <div className="col">
@@ -67,7 +67,7 @@ export default function Inicio(props) {
                     </Card>
                   </Col>
                   <Col lg="4" xl="4">
-                    <Card className="card-stats mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
+                    <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                       <CardBody>
                         <Row>
                           <div className="col">

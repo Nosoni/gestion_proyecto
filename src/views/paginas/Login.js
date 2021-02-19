@@ -28,8 +28,8 @@ export default function Login(props) {
 
   return (
     <div className="main">
-      <Col>
-        <Card>
+      <Col className="pt-md row align-items-center justify-content-center">
+        <Card className="card-log">
           <Form >
             <Row className="justify-content-center">
               <Col md="6">

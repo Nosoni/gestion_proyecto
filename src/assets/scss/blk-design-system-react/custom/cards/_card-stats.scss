@@ -8,6 +8,9 @@
 .card-stats {
   margin-bottom: 5px;
   height: 130px;
+  &.pointer{
+    cursor: pointer;
+  }
   &.upper {
     box-shadow: 2px 7px 11px rgba(0, 0, 0, 0.4);
     transform: translate(-20px, -25px);
