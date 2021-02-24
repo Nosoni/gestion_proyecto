@@ -60,8 +60,8 @@ export default function Inicio(props) {
                           </Col>
                         </Row>
                         <p className="mt-3 mb-0 text-muted text-sm">
-                          <span className="text-nowrap"> Módulo que permite la generación de líneas bases</span>
-                          <span className="text-nowrap"> </span>
+                          <span className="text-nowrap"> Módulo que permite la generación de líneas</span>
+                          <span className="text-nowrap"> bases</span>
                         </p>
                       </CardBody>
                     </Card>
