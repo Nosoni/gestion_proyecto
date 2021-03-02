@@ -1,26 +1,37 @@
-import React, { useState } from 'react'
-import { Form, Card, Row, Col, FormGroup, Input, Button } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Form, Card, Row, Col, FormGroup, Input, Button, Alert } from 'reactstrap'
 import { getUsuario } from '../../api/usuario'
 
 export default function Login(props) {
   //variable local para objeto tipo usuario
   const [usuario, setUsuario] = useState({})
+  const [error, setError] = useState("")
+  const [showError, setShowError] = useState(false)
 
   //evento de validación de usuario
   const login = async () => {
-    //si el usuario cargó datos busca en BD
-    if (Object.keys(usuario).length > 0) {
-      //evento que consume la API
-      const response = await getUsuario(usuario);
-      //si existe, redirige a la pag principal
-      if (response.length > 0)
-        props.history.push("/inicio")
-      else
-        console.log("El usuario no existe")
-    } else {
-      console.log("Ingrese usuario y contraseña")
+    //validar que ingresó algo
+    if (!usuario.usuario || usuario.usuario.length === 0) {
+      setError("Ingrese usuario")
+      return;
     }
+    if (!usuario.password || usuario.usuario.password === 0) {
+      setError("Ingrese contraseña")
+      return;
+    }
+    //si el usuario cargó datos busca en BD
+    //evento que consume la API
+    const response = await getUsuario(usuario);
+    //si existe, redirige a la pag principal
+    if (response.length > 0)
+      props.history.push("/inicio")
+    else
+      setError("El usuario no existe")
   }
+
+  useEffect(() => {
+    error.length > 0 ? setShowError(true) : setShowError(false)
+  }, [error])
 
   //eventos que actualizan la variable local usuario de tipo objeto
   const usuarioEstado = (event) => setUsuario({ ...usuario, usuario: event.target.value })
@@ -28,6 +39,13 @@ export default function Login(props) {
 
   return (
     <div className="main">
+      <div className="container-xl">
+        <Alert color="danger" isOpen={showError} toggle={() => setError("")}>
+          <span>
+            {error}
+          </span>
+        </Alert>
+      </div>
       <Col className="pt-md row align-items-center justify-content-center">
         <Card className="card-log">
           <Form >
