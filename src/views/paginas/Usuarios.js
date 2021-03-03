@@ -1,6 +1,6 @@
-import { getUsuario } from "api/usuario";
+import { getAllUsuario } from "api/usuario";
 import React, { useEffect, useState } from "react";
-import { Container, Col, Card, CardBody, Row, CardTitle } from "reactstrap";
+import { Container, Col, Card, CardBody, Row } from "reactstrap";
 import generatePDF from "../../services/reportGenerator";
 
 import BarraNavegacion from "../../components/Navbars/BarraNavegacion"
@@ -19,8 +19,9 @@ export default function Inicio(props) {
   useEffect(() => {
     buscarUsuario()
   })
+
   const buscarUsuario = async () => {
-    const response = await getUsuario({ usuario: "frecalde", password: "frecalde" });
+    const response = await getAllUsuario();
     setTickets(response[0])
   }
 

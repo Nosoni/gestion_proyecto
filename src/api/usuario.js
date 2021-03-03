@@ -1,7 +1,7 @@
 import { server } from "../constantes/constantes"
 const servicio = "usuario";
 
-const getUsuario = async filter => {
+const getByUsuarioPass = async filter => {
   var where = "?and=(activo.is.true,and("
   for (const filtro in filter) {
     if (filter[filtro]) {
@@ -20,4 +20,17 @@ const getUsuario = async filter => {
     .then(response => response.json())
 };
 
-export { getUsuario };
+
+const getAllUsuario = async () => {
+  var where = "?activo=is.true"
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+export { getByUsuarioPass, getAllUsuario };

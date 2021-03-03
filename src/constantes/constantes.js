@@ -1,2 +1,7 @@
 const server = 'http://localhost:8000'
-export { server }
+
+const permisos = {
+  CREAR_USUARIO: "crear_usuario"
+}
+
+export { server, permisos }
