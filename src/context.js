@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export const context = createContext(null);
 
@@ -12,10 +12,26 @@ export function SesionContext({ children }) {
 }
 
 function useProvideSesion() {
-  const [valoresSesion, setValoresSesion] = useState({ pepito: "hola" });
+  const [valoresSesion, setValoresSesion] = useState(null);
 
-  const actualizarValores = valores => {
-    setValoresSesion({ ...valoresSesion, valores });
+  useEffect(() => {
+    valoresSesion != null ? console.log(valoresSesion) : console.log("")
+  }, [valoresSesion])
+
+  const actualizarValores = (accion) => {
+    switch (accion.type) {
+      case "usuario":
+        setValoresSesion({ ...valoresSesion, usuario: accion.payload });
+        break;
+      case "proyecto":
+        setValoresSesion({ ...valoresSesion, proyecto: accion.payload });
+        break;
+      case "permisos":
+        setValoresSesion({ ...valoresSesion, permisos: accion.payload });
+        break;
+      default:
+        break;
+    }
   };
 
   return {

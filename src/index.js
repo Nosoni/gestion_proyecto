@@ -30,7 +30,7 @@ import ProfilePage from "./views/examples/ProfilePage.js";
 import Login from "./views/paginas/Login.js";
 import Inicio from "./views/paginas/Inicio.js";
 import NotFound from "./views/paginas/NotFound.js";
-import Usuarios from "./views/paginas/Usuarios.js";
+import Administracion from "./views/paginas/Administracion.js";
 import { SesionContext } from "./context.js"
 
 ReactDOM.render(
@@ -59,8 +59,8 @@ ReactDOM.render(
           render={(props) => <Inicio {...props} />}
         />
         <Route
-          path="/usuarios"
-          render={(props) => <Usuarios {...props} />}
+          path="/administracion"
+          render={(props) => <Administracion {...props} />}
         />
         <Route
           path="/404"

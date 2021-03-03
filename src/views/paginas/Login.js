@@ -1,6 +1,6 @@
 import { getAllProyecto } from '../../api/proyecto';
 import { getByUsuarioProyecto } from '../../api/usuarioRolProyecto';
-import { useSesion } from 'context';
+import { useSesion } from '../../context';
 import React, { useEffect, useState } from 'react'
 import { Form, Card, Row, Col, FormGroup, Input, Button, Alert } from 'reactstrap'
 import { getByUsuarioPass } from '../../api/usuario'
@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { getViewByRol } from '../../api/rolPermiso';
 
 export default function Login(props) {
+  //variable global
   let sesion = useSesion();
   //variable local para objeto tipo usuario
   const [usuario, setUsuario] = useState({})
@@ -27,40 +28,37 @@ export default function Login(props) {
 
   const buscarProyecto = async () => {
     const response = await getAllProyecto();
-    let opciones = response.map(dato => { return { value: dato.id, label: dato.nombre } })
-    if (response.length > 0)
+    if (response.length > 0) {
+      let opciones = response.map(dato => { return { value: dato.id, label: dato.nombre } })
       setProyecto(opciones)
+    }
   }
 
-  //evento de validación de usuario
+  /* Validación de carga de credenciales
+   * Búsqueda de usuario
+   * Se optiene permisos según usuario - rol - proyecto
+   * Se actualiza variable de sesión */
   const login = async () => {
-    //validar que ingresó algo
-    if (!usuario.usuario || usuario.usuario.length === 0) {
-      setError("Ingrese usuario")
-      return;
-    }
-    if (!usuario.password || usuario.usuario.password === 0) {
-      setError("Ingrese contraseña")
-      return;
-    }
-    //si el usuario cargó datos busca en BD
-    const response = await getByUsuarioPass(usuario);
-    if (response.length > 0) {
-      //busca el rol del usuario según el proyecto
-      const usuarioRol = await getByUsuarioProyecto(response[0].id, proyectoSeleccionado)
-      //busca permisos por rol y asignar a variables de sesion
-      const permisos = await getViewByRol(usuarioRol[0].rol_id)
-        .then(response =>
-          response.map(registro => {
-            return {
-              permiso: registro.permiso_nombre
-            }
-          })
-        )
+    // TODO, validar proyecto
 
-      //TODO MEJORAR PASO DE PERMISOS
-      sesion.actualizarValores(permisos)
-      console.log(sesion)
+    // if (!usuario.usuario || usuario.usuario.length === 0) {
+    //   setError("Ingrese usuario")
+    //   return;
+    // }
+    // if (!usuario.password || usuario.usuario.password === 0) {
+    //   setError("Ingrese contraseña")
+    //   return;
+    // }
+    const response = await getByUsuarioPass({ usuario: "frecalde", password: "frecalde" });
+    if (response.length > 0) {
+      const usuarioRol = await getByUsuarioProyecto(response[0].id, proyectoSeleccionado)
+      const permisos = await getViewByRol(usuarioRol[0].rol_id).then(respuesta => {
+          return respuesta.map(registro => registro.permiso_nombre)
+        })
+
+      sesion.actualizarValores({ type: "usuario", payload: response[0].usuario })
+      sesion.actualizarValores({ type: "proyecto", payload: proyectoSeleccionado })
+      sesion.actualizarValores({ type: "permisos", payload: permisos })
       props.history.push("/inicio")
     }
     else {
@@ -108,6 +106,7 @@ export default function Login(props) {
                   <Select
                     className="basic-single"
                     classNamePrefix="select"
+                    defaultValue={proyecto[1]}
                     options={proyecto}
                     onChange={(seleccion) => proyectoEstado(seleccion.value)}
                     name="proyecto"
