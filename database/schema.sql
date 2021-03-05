@@ -6,12 +6,6 @@ CREATE TABLE public.usuario (
 	activo bool NOT NULL
 );
 
-CREATE TABLE public.proyecto (
-	id serial NOT NULL,
-	nombre varchar NOT NULL,
-	activo bool NOT NULL
-);
-
 CREATE TABLE public.rol (
 	id serial NOT NULL,
 	nombre varchar NOT NULL,
@@ -33,15 +27,13 @@ CREATE TABLE public.rol_permiso (
 );
 COMMENT ON TABLE public.rol_permiso IS 'permisos asignados a los roles';
 
-CREATE TABLE public.usuario_rol_proyecto (
+CREATE TABLE public.usuario_rol (
 	id serial NOT NULL,
 	usuario_id int NOT NULL,
 	rol_id int NOT NULL,
-	proyecto_id int NOT NULL,
 	activo bool NOT NULL
 );
-COMMENT ON TABLE public.usuario_rol_proyecto IS 'roles asignados a usuarios por proyectos';
-
+COMMENT ON TABLE public.usuario_rol IS 'roles asignados a usuarios';
 
 --views
 create or replace

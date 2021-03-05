@@ -1,7 +1,7 @@
 import { server } from "../constantes/constantes"
 const servicio = "permiso";
 
-const getAllPermiso = async () => {
+const permisoGetAll = async () => {
   var where = "?activo=is.true"
   const url = `${server}/${servicio}${where}`;
   var requestOptions = {
@@ -13,4 +13,4 @@ const getAllPermiso = async () => {
     .then(response => response.json())
 };
 
-export { getAllPermiso };
+export { permisoGetAll };

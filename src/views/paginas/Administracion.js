@@ -1,10 +1,8 @@
-import { getAllUsuario } from "api/usuario";
 import React, { useEffect, useState } from "react";
 import { Container, Col, Card, CardBody, Row } from "reactstrap";
 import BarraNavegacion from "../../components/Navs/AdminNav"
 
 export default function Inicio(props) {
-  const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
   })

@@ -23,9 +23,6 @@ function useProvideSesion() {
       case "usuario":
         setValoresSesion({ ...valoresSesion, usuario: accion.payload });
         break;
-      case "proyecto":
-        setValoresSesion({ ...valoresSesion, proyecto: accion.payload });
-        break;
       case "permisos":
         setValoresSesion({ ...valoresSesion, permisos: accion.payload });
         break;

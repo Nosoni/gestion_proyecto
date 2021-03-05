@@ -1,7 +1,7 @@
 import { server } from "../constantes/constantes"
 const servicio = "rol";
 
-const getAllRol = async () => {
+const rolGetAll = async () => {
   var where = "?activo=is.true"
   const url = `${server}/${servicio}${where}`;
   var requestOptions = {
@@ -13,4 +13,4 @@ const getAllRol = async () => {
     .then(response => response.json())
 };
 
-export { getAllRol };
+export { rolGetAll };
