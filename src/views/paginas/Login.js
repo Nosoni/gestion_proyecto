@@ -37,11 +37,8 @@ export default function Login(props) {
     if (response.length > 0) {
       const usuarioRol = await usuarioRolGetByUsuario(response[0].id)
       const permisos = await rolPermisoViewGetByRol(usuarioRol[0].rol_id).then(respuesta => {
-        console.log(respuesta)
-
         return respuesta.map(registro => registro.permiso_nombre)
       })
-      console.log(permisos)
 
       sesion.actualizarValores({ type: "usuario", payload: response[0].usuario })
       sesion.actualizarValores({ type: "permisos", payload: permisos })

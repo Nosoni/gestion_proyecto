@@ -1,48 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Container, Col, Card, CardBody, Row } from "reactstrap";
-import BarraNavegacion from "../../components/Navs/AdminNav"
+import React from "react";
+import AdminNav from "../../components/Administracion/AdminNav"
+import { Route, Switch, Redirect } from "react-router-dom";
+import Usuario from "../../components/Administracion/Usuario/Usuario";
+import Rol from "../../components/Administracion/Rol/Rol";
 
 export default function Inicio(props) {
 
-  useEffect(() => {
-  })
+  const getRoutes = (routes) => {
+    return routes.map((prop, key) => {
+      if (prop.layout === "/administracion") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+  };
 
   return (
     <>
       <div className="wrapper">
-        <BarraNavegacion />
+        <AdminNav routes={routes} />
         <div className="page-header header-filter">
           <div className="header bg-gradient-info pb-8 pt-md">
-            <Container fluid>
-              <div className="header-body">
-                <Row>
-                  <Col lg="3" xl="3">
-                    <Card className="bg-white">
-                      <CardBody>
-                        <Row>
-                          <div className="col">
-                            <span className="h2 font-weight-bold mb-0">
-                              Usuarios
-                            </span>
-                          </div>
-                          <Col className="col-auto">
-                            <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                              <i className="fas fa-users-cog"></i>
-                            </div>
-                          </Col>
-                        </Row>
-                        <p className="mt-3 mb-0 text-muted text-sm">
-                          <span className="text-nowrap">Permite agregar o editar usuarios</span>
-                        </p>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-              </div>
-            </Container>
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="*" to="/administracion/usuario" />
+            </Switch>
           </div>
         </div>
       </div>
     </>
   );
 }
+
+var routes = [
+  {
+    path: "/usuario",
+    name: "Usuario",
+    icon: "ni ni-planet text-blue",
+    component: Usuario,
+    layout: "/administracion",
+  },
+  {
+    path: "/rol",
+    name: "Rol",
+    icon: "ni ni-pin-3 text-orange",
+    component: Rol,
+    layout: "/administracion",
+  },
+];

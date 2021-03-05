@@ -45,7 +45,7 @@ export default function BaraNavegacion() {
     <Navbar className={"fixed-top " + color} color-on-scroll="100" expand="lg">
       <Container>
         <div className="navbar-translate">
-          <NavbarBrand to="/" tag={Link} id="navbar-brand">
+          <NavbarBrand to="/inicio" tag={Link} id="navbar-brand">
             <span>INICIO</span>
           </NavbarBrand>
           <button

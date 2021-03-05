@@ -45,7 +45,9 @@
       }
       padding: 15px 15px 0;
       border: 0;
-      color: rgba($white,0.8);
+      color: $black;
+      font-style: oblique;
+      font-weight: bold;
 
       .card-title{
           color: $white;
@@ -89,7 +91,7 @@
     label{
         font-size: $font-size-sm;
         margin-bottom: 5px;
-
+        color: $black;
     }
 
     .card-footer{

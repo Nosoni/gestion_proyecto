@@ -1,10 +1,11 @@
 /* Form controls */
-@include form-control-placeholder(#6c757c, 1);
+@include form-control-placeholder(#5e6468, 1);
 
 .form-control{
   border-color: lighten($black,5%);
   border-radius: $border-radius-lg;
   font-size: $font-size-sm;
+  color: #5e6468;
   @include transition-input-focus-color();
 
 
