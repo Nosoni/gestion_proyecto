@@ -63,7 +63,7 @@ export default function Login(props) {
         </Alert>
       </div>
       <Col className="pt-md row align-items-center justify-content-center">
-        <Card className="card-log">
+        <Card className="card-log bg-white">
           <Form >
             <Row className="justify-content-center">
               <Col md="6">

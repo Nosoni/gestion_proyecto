@@ -13,4 +13,45 @@ const rolGetAll = async () => {
     .then(response => response.json())
 };
 
-export { rolGetAll };
+const rolGetByRol = async (rol) => {
+  var where = `?and=(activo.is.true,nombre.like.*${rol}*)`
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+const rolCrear = async (datos) => {
+  const url = `${server}/${servicio}`;
+  var requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...datos, activo: true })
+  };
+
+  return await fetch(url, requestOptions)
+};
+
+
+const rolDeleteById = async (id) => {
+  var where = `?id=eq.${id}`
+  const url = `${server}/${servicio}${where}`;
+  const dato = JSON.stringify({ activo: false })
+  var requestOptions = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: dato
+  };
+
+  return await fetch(url, requestOptions)
+};
+
+export { rolGetAll, rolGetByRol, rolCrear, rolDeleteById };

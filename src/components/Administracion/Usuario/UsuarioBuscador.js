@@ -6,7 +6,7 @@ import {
 import { usuarioGetByUsuario } from '../../../api/usuario'
 import { Accion, UsuarioEstado } from "./Usuario"
 
-export default function UsuarioBuscador(props) {
+export default function UsuarioBuscador() {
   const { dispatch } = useContext(UsuarioEstado);
   const [resultado, setResultado] = useState([])
   const [busqueda, setBusqueda] = useState("")
