@@ -49,3 +49,12 @@ from
 	rol_permiso rp
 join permiso p on
 	rp.permiso_id = p.id
+
+CREATE OR REPLACE VIEW public.usuario_rol_view
+AS SELECT ur.id AS usuario_rol_id,
+    ur.rol_id,
+    ur.usuario_id,
+    r.nombre,
+    ur.activo 
+   FROM usuario_rol ur
+     JOIN rol r ON r.id = ur.rol_id;

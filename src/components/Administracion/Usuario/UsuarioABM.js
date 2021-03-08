@@ -1,18 +1,46 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-  Row, Col, Card, CardHeader, CardBody, Form, FormGroup, Input, Button
+  Row, Col, Card, CardHeader, CardBody, Form, FormGroup, Input, Button,
+  Table
 } from 'reactstrap'
 import { Accion, UsuarioEstado } from './Usuario';
 import { usuarioCrear, usuarioDeleteById, usuarioActualizar, usuarioGetByUsuario } from '../../../api/usuario'
+import Select from 'react-select';
+import { rolGetAll } from '../../../api/rol';
+import { usuarioRolAsignar, usuarioRolViewGetByUsuario } from '../../../api/usuarioRol';
 
 export default function UsuarioABM() {
   const { state, dispatch } = useContext(UsuarioEstado);
   const [valoresIniciales, setValoresIniciales] = useState(state.seleccionado)
   const [usuarioLocal, setUsuarioLocal] = useState({})
+  const [rolOpciones, setRolOpciones] = useState([])
+  const [rolAsignar, setRolAsignar] = useState()
+  const [rolUsuario, setRolUsuario] = useState([])
+
+  const buscarRol = async () => {
+    const respuesta = await rolGetAll()
+    let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
+    setRolOpciones(opciones)
+  }
+
+  const buscarRolUsuario = async () => {
+    const respuesta = await usuarioRolViewGetByUsuario(valoresIniciales.id)
+    setRolUsuario(respuesta)
+  }
 
   useEffect(() => {
     setValoresIniciales(state.seleccionado)
   }, [state])
+
+  useEffect(() => {
+    if (valoresIniciales.id) {
+      buscarRolUsuario()
+    }
+  })
+
+  useEffect(() => {
+    buscarRol()
+  })
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
   const crearUsuario = async () => {
@@ -56,6 +84,15 @@ export default function UsuarioABM() {
     }
   }
 
+  const asignarRol = async () => {
+    // try {
+    //   const respuesta = await usuarioRolAsignar()
+
+    // } catch (error) {
+    //   console.log("ocurrio un error")
+    // }
+  }
+
   return (<div>
     <Row className="justify-content-center">
       <Col lg="6" xl="6">
@@ -65,7 +102,7 @@ export default function UsuarioABM() {
           </CardHeader>
           <CardBody>
             <Form>
-              <Row className="justify-content-center">
+              <Row>
                 <Col md="6">
                   <FormGroup>
                     <label >Usuario</label>
@@ -89,15 +126,57 @@ export default function UsuarioABM() {
                   valoresIniciales.id ?
                     <>
                       <Button size="sm" onClick={() => editarUsuario()}> Editar </Button>
-                      <Button className="btn-danger" size="sm" onClick={() => eliminarUsuario()}>
-                        Eliminar
-                      </Button>
+                      <Button className="btn-danger" size="sm" onClick={() => eliminarUsuario()}> Eliminar </Button>
                     </> :
                     <Button size="sm" onClick={() => crearUsuario()}> Crear </Button>
                 }
                 <Button className="btn-warning" size="sm" onClick={() => actualizarSelecion({})}> Cancelar </Button>
               </Row>
             </Form>
+          </CardBody>
+        </Card>
+      </Col>
+      <Col lg="6" xl="6">
+        <Card className="card-user">
+          <CardHeader className="card-header">
+            ROL DEL USUARIO
+          </CardHeader>
+          <CardBody>
+            <Row className="align-items-center">
+              <Col lg="1" xl="1">
+                <label>Rol</label>
+              </Col>
+              <Col lg="6" xl="6">
+                <Select
+                  className="basic-single"
+                  classNamePrefix="select"
+                  options={rolOpciones}
+                  onChange={(seleccion) => setRolAsignar(seleccion.value)}
+                  name="rol"
+                />
+              </Col>
+              <Col lg="3" xl="3">
+                <Button size="sm" onClick={asignarRol}>Asignar Rol</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Table className="table">
+                <thead className="text-primary">
+                  <tr>
+                    <th className="header">Rol</th>
+                    <th className="header">Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    rolUsuario.map(dato => <tr key={dato.rol_id}>
+                      <td> {dato.nombre} </td>
+                      <td> <Button size="sm" onClick={() => { }}>Eliminar</Button> </td>
+                    </tr>)
+                  }
+                </tbody>
+              </Table>
+            </Row>
           </CardBody>
         </Card>
       </Col>

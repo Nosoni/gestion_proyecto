@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Col, Card, CardBody, Row } from "reactstrap";
 import { useSesion } from '../../context';
 import BarraNavegacion from "../../components/Navbars/BarraNavegacion"
+import { permisos as PERMISOSCONST } from '../../constantes/constantes'
 
 export default function Inicio(props) {
   let sesion = useSesion();
@@ -25,7 +26,7 @@ export default function Inicio(props) {
               <div className="header-body">
                 <Row>
                   {
-                    permisosTiene.find(permiso => permiso === "ver_menu_administracion") ?
+                    permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_ADMINISTRACION) ?
                       <Col lg="4" xl="4">
                         <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/administracion")}>
                           <CardBody>
@@ -51,7 +52,7 @@ export default function Inicio(props) {
                       null
                   }
                   {
-                    permisosTiene.find(permiso => permiso === "ver_menu_configuracion") ?
+                    permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_CONFIGURACION) ?
                       <Col lg="4" xl="4">
                         <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                           <CardBody>
@@ -73,12 +74,11 @@ export default function Inicio(props) {
                             </p>
                           </CardBody>
                         </Card>
-                      </Col>
-                      :
+                      </Col> :
                       null
                   }
                   {
-                    permisosTiene.find(permiso => permiso === "ver_menu_desarrollo") ?
+                    permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_DESARROLLO) ?
                       <Col lg="4" xl="4">
                         <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
                           <CardBody>
@@ -101,8 +101,7 @@ export default function Inicio(props) {
                             </p>
                           </CardBody>
                         </Card>
-                      </Col>
-                      :
+                      </Col> :
                       null
                   }
                 </Row>

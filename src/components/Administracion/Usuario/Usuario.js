@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useReducer } from "react";
 import UsuarioABM from "./UsuarioABM";
 import UsuarioBuscador from "./UsuarioBuscador";
 import { createContext } from "react";
