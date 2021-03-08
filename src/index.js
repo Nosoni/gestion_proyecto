@@ -30,42 +30,45 @@ import ProfilePage from "./views/examples/ProfilePage.js";
 import Login from "./views/paginas/Login.js";
 import Inicio from "./views/paginas/Inicio.js";
 import NotFound from "./views/paginas/NotFound.js";
-import Usuarios from "./views/paginas/Usuarios.js";
+import Administracion from "./views/paginas/Administracion.js";
+import { SesionContext } from "./context.js"
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/components" render={(props) => <Index {...props} />} />
-      <Route
-        path="/landing-page"
-        render={(props) => <LandingPage {...props} />}
-      />
-      <Route
-        path="/register-page"
-        render={(props) => <RegisterPage {...props} />}
-      />
-      <Route
-        path="/profile-page"
-        render={(props) => <ProfilePage {...props} />}
-      />
-      <Route
-        path="/login"
-        render={(props) => <Login {...props} />}
-      />
-      <Route
-        path="/inicio"
-        render={(props) => <Inicio {...props} />}
-      />
-      <Route
-        path="/usuarios"
-        render={(props) => <Usuarios {...props} />}
-      />
-      <Route
-        path="/404"
-        render={(props) => <NotFound {...props} />}
-      />
-      <Redirect from="/" to="/components" />
-    </Switch>
-  </BrowserRouter>,
+  <SesionContext>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/components" render={(props) => <Index {...props} />} />
+        <Route
+          path="/landing-page"
+          render={(props) => <LandingPage {...props} />}
+        />
+        <Route
+          path="/register-page"
+          render={(props) => <RegisterPage {...props} />}
+        />
+        <Route
+          path="/profile-page"
+          render={(props) => <ProfilePage {...props} />}
+        />
+        <Route
+          path="/login"
+          render={(props) => <Login {...props} />}
+        />
+        <Route
+          path="/inicio"
+          render={(props) => <Inicio {...props} />}
+        />
+        <Route
+          path="/administracion"
+          render={(props) => <Administracion {...props} />}
+        />
+        <Route
+          path="/404"
+          render={(props) => <NotFound {...props} />}
+        />
+        <Redirect from="/" to="/components" />
+      </Switch>
+    </BrowserRouter>
+  </SesionContext>,
   document.getElementById("root")
 );

@@ -1,5 +1,5 @@
 .card-user {
-  overflow: hidden;
+  background-color: #E9E4DE;
     .image {
         height: 120px;
     }
@@ -59,7 +59,11 @@
     }
 
     .card-body {
-        min-height: 240px;
+        height: 240px;
+        overflow-y:scroll;
+    }
+    .card-body::-webkit-scrollbar{
+      display: none;
     }
 
     hr {

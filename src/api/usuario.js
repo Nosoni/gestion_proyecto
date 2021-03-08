@@ -1,7 +1,7 @@
 import { server } from "../constantes/constantes"
 const servicio = "usuario";
 
-const getUsuario = async filter => {
+const usuarioGetByUsuarioPass = async filter => {
   var where = "?and=(activo.is.true,and("
   for (const filtro in filter) {
     if (filter[filtro]) {
@@ -20,4 +20,73 @@ const getUsuario = async filter => {
     .then(response => response.json())
 };
 
-export { getUsuario };
+const usuarioGetAll = async () => {
+  var where = "?activo=is.true"
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+const usuarioGetByUsuario = async (usuario) => {
+  var where = `?and=(activo.is.true,usuario.like.*${usuario}*)`
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+const usuarioDeleteById = async (id) => {
+  var where = `?id=eq.${id}`
+  const url = `${server}/${servicio}${where}`;
+  const dato = JSON.stringify({ activo: false })
+  var requestOptions = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: dato
+  };
+
+  return await fetch(url, requestOptions)
+};
+
+const usuarioCrear = async (datos) => {
+  const url = `${server}/${servicio}`;
+  var requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...datos, activo: true })
+  };
+
+  return await fetch(url, requestOptions)
+};
+
+const usuarioActualizar = async (datos) => {
+  var where = `?id=eq.${datos.id}`
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(datos)
+  };
+
+  return await fetch(url, requestOptions)
+};
+
+export {
+  usuarioGetByUsuarioPass, usuarioGetAll, usuarioGetByUsuario,
+  usuarioCrear, usuarioDeleteById, usuarioActualizar
+};

@@ -1,24 +1,51 @@
-import React, { useState } from 'react'
-import { Form, Card, Row, Col, FormGroup, Input, Button } from 'reactstrap'
-import { getUsuario } from '../../api/usuario'
+import React, { useEffect, useState } from 'react'
+import { Form, Card, Row, Col, FormGroup, Input, Button, Alert } from 'reactstrap'
+import { useSesion } from '../../context';
+import { usuarioGetByUsuarioPass } from '../../api/usuario'
+import { usuarioRolGetByUsuario } from '../../api/usuarioRol';
+import { rolPermisoViewGetByRol } from '../../api/rolPermiso';
 
 export default function Login(props) {
+  //variable global
+  let sesion = useSesion();
   //variable local para objeto tipo usuario
   const [usuario, setUsuario] = useState({})
+  const [error, setError] = useState("")
+  const [showError, setShowError] = useState(false)
 
-  //evento de validación de usuario
+  useEffect(() => {
+    error.length > 0 ? setShowError(true) : setShowError(false)
+  }, [error])
+
+  /* Validación de carga de credenciales
+   * Búsqueda de usuario
+   * Se obtiene rol por usuario
+   * Se obtiene permisos según usuario - rol
+   * Se actualiza variable de sesión */
   const login = async () => {
-    //si el usuario cargó datos busca en BD
-    if (Object.keys(usuario).length > 0) {
-      //evento que consume la API
-      const response = await getUsuario(usuario);
-      //si existe, redirige a la pag principal
-      if (response.length > 0)
-        props.history.push("/inicio")
-      else
-        console.log("El usuario no existe")
-    } else {
-      console.log("Ingrese usuario y contraseña")
+    // TODO, validar proyecto
+
+    // if (!usuario.usuario || usuario.usuario.length === 0) {
+    //   setError("Ingrese usuario")
+    //   return;
+    // }
+    // if (!usuario.password || usuario.usuario.password === 0) {
+    //   setError("Ingrese contraseña")
+    //   return;
+    // }
+    const response = await usuarioGetByUsuarioPass({ usuario: "frecalde", password: "frecalde" });
+    if (response.length > 0) {
+      const usuarioRol = await usuarioRolGetByUsuario(response[0].id)
+      const permisos = await rolPermisoViewGetByRol(usuarioRol[0].rol_id).then(respuesta => {
+        return respuesta.map(registro => registro.permiso_nombre)
+      })
+
+      sesion.actualizarValores({ type: "usuario", payload: response[0].usuario })
+      sesion.actualizarValores({ type: "permisos", payload: permisos })
+      props.history.push("/inicio")
+    }
+    else {
+      setError("El usuario no existe")
     }
   }
 
@@ -28,8 +55,15 @@ export default function Login(props) {
 
   return (
     <div className="main">
+      <div className="container-xl">
+        <Alert color="danger" isOpen={showError} toggle={() => setError("")}>
+          <span>
+            {error}
+          </span>
+        </Alert>
+      </div>
       <Col className="pt-md row align-items-center justify-content-center">
-        <Card className="card-log">
+        <Card className="card-log bg-white">
           <Form >
             <Row className="justify-content-center">
               <Col md="6">
