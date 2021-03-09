@@ -13,36 +13,38 @@ export default function UsuarioABM() {
   const { state, dispatch } = useContext(UsuarioEstado);
   const [valoresIniciales, setValoresIniciales] = useState(state.seleccionado)
   const [usuarioLocal, setUsuarioLocal] = useState({})
-  const [rolOpciones, setRolOpciones] = useState([])
+  const [selectOpciones, setSelectOpciones] = useState([])
   const [rolAsignar, setRolAsignar] = useState()
-  const [rolUsuario, setRolUsuario] = useState([])
+  const [rolesDelUsuario, setRolesDelUsuario] = useState([])
 
-  const buscarRol = async () => {
+  const buscarRoles = async () => {
     const respuesta = await rolGetAll()
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
-    setRolOpciones(opciones)
+    console.log("buscarRoles", opciones)
+    setSelectOpciones(opciones)
   }
 
   const buscarRolUsuario = async () => {
     const respuesta = await usuarioRolViewGetByUsuario(valoresIniciales.id)
-    setRolUsuario(respuesta)
+    setRolesDelUsuario(respuesta)
+    console.log("buscarRolUsuario", respuesta)
   }
 
   useEffect(() => {
+    console.log("useEffect state", state)
     setValoresIniciales(state.seleccionado)
   }, [state])
 
   useEffect(() => {
+    console.log("useEffect valoresIniciales", valoresIniciales)
+    buscarRoles()
     if (valoresIniciales.id) {
       buscarRolUsuario()
     }
-  })
-
-  useEffect(() => {
-    buscarRol()
-  })
+  }, [valoresIniciales])
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
+
   const crearUsuario = async () => {
     try {
       if (!usuarioLocal.usuario || usuarioLocal.usuario.length === 0) {
@@ -85,12 +87,17 @@ export default function UsuarioABM() {
   }
 
   const asignarRol = async () => {
+    console.log("rolasignar", rolAsignar)
     // try {
     //   const respuesta = await usuarioRolAsignar()
 
     // } catch (error) {
     //   console.log("ocurrio un error")
     // }
+  }
+
+  const deshabilitarRol = (id) => e => {
+    console.log("deshabilitarRol", id)
   }
 
   return (<div>
@@ -150,7 +157,7 @@ export default function UsuarioABM() {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  options={rolOpciones}
+                  options={selectOpciones}
                   onChange={(seleccion) => setRolAsignar(seleccion.value)}
                   name="rol"
                 />
@@ -169,10 +176,20 @@ export default function UsuarioABM() {
                 </thead>
                 <tbody>
                   {
-                    rolUsuario.map(dato => <tr key={dato.rol_id}>
-                      <td> {dato.nombre} </td>
-                      <td> <Button size="sm" onClick={() => { }}>Eliminar</Button> </td>
-                    </tr>)
+                    rolesDelUsuario.length > 0 ?
+                      rolesDelUsuario.map(dato =>
+                        <tr key={dato.rol_id}>
+                          <td> {dato.nombre} </td>
+                          <td> <Button size="sm" onClick={deshabilitarRol(dato.rol_id)}>Eliminar</Button> </td>
+                        </tr>
+                      ) :
+                      <>
+                        <tr>
+                          <td> Sin datos... </td>
+                          <td />
+                          <td />
+                        </tr>
+                      </>
                   }
                 </tbody>
               </Table>
