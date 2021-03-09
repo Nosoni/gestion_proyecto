@@ -14,20 +14,19 @@ export default function RolABM() {
   const { state, dispatch } = useContext(RolEstado);
   const [valoresIniciales, setValoresIniciales] = useState(state.seleccionado)
   const [rolLocal, setRolLocal] = useState({})
-  const [permisoOpciones, setPermisoOpciones] = useState([])
+  const [selectOpciones, setSelectOpciones] = useState([])
   const [permisoAsingnar, setPermisoAsignar] = useState()
-  const [permisoRol, setPermisoRol] = useState([])
+  const [permisosDelRol, setPermisosDelRol] = useState([])
 
-  const buscarPermiso = async () => {
+  const buscarPermisos = async () => {
     const respuesta = await permisoGetAll()
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
-    setPermisoOpciones(opciones)
+    setSelectOpciones(opciones)
   }
 
   const buscarPermisoRol = async () => {
-    console.log(valoresIniciales.id)
-    // const respuesta = await rolPermisoViewGetByRol(valoresIniciales.id)
-    // setPermisoRol(respuesta)
+    const respuesta = await rolPermisoViewGetByRol(valoresIniciales.id)
+    setPermisosDelRol(respuesta)
   }
 
   useEffect(() => {
@@ -35,15 +34,11 @@ export default function RolABM() {
   }, [state])
 
   useEffect(() => {
+    buscarPermisos()
     if (valoresIniciales.id) {
-      console.log("buscarPermiso")
       buscarPermisoRol()
     }
   }, [valoresIniciales])
-
-  useEffect(() => {
-    buscarPermiso()
-  })
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
 
@@ -77,9 +72,18 @@ export default function RolABM() {
       await rolDeleteById(valoresIniciales.id)
       actualizarSelecion({})
       setRolLocal({})
+      setPermisosDelRol([])
     } catch (error) {
       console.log("ocurrio un error")
     }
+  }
+
+  const asignarRol = () => e => {
+    console.log("permisoasignar", permisoAsingnar)
+  }
+
+  const deshabilitarRol = (id) => e => {
+    console.log("deshabilitarRol", id)
   }
 
   return (
@@ -132,13 +136,13 @@ export default function RolABM() {
                   <Select
                     className="basic-single"
                     classNamePrefix="select"
-                    options={permisoOpciones}
+                    options={selectOpciones}
                     onChange={(seleccion) => setPermisoAsignar(seleccion.value)}
                     name="rol"
                   />
                 </Col>
-                <Col lg="3" xl="3">
-                  <Button size="sm" onClick={() => { }}>Asignar Permiso</Button>
+                <Col lg="4" xl="4">
+                  <Button size="sm" onClick={asignarRol()}>Asignar Permiso</Button>
                 </Col>
               </Row>
               <Row>
@@ -146,15 +150,26 @@ export default function RolABM() {
                   <thead className="text-primary">
                     <tr>
                       <th className="header">Permiso</th>
+                      <th className="header">Descripción</th>
                       <th className="header">Eliminar</th>
                     </tr>
                   </thead>
                   <tbody>
                     {
-                      permisoRol.map(dato => <tr key={dato}>
-                        <td> {dato.nombre} </td>
-                        <td> <Button size="sm" onClick={() => { }}>Eliminar`</Button> </td>
-                      </tr>)
+                      permisosDelRol.length > 0 ?
+                        permisosDelRol.map(dato =>
+                          <tr key={dato.rol_permiso_id}>
+                            <td> {dato.permiso_nombre} </td>
+                            <td> {dato.permiso_descripcion} </td>
+                            <td> <Button size="sm" onClick={deshabilitarRol(dato.rol_permiso_id)}>Eliminar</Button> </td>
+                          </tr>) :
+                        <>
+                          <tr>
+                            <td> Sin datos... </td>
+                            <td />
+                            <td />
+                          </tr>
+                        </>
                     }
                   </tbody>
                 </Table>
