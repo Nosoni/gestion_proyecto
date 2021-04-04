@@ -7,7 +7,7 @@ import { Accion, RolEstado } from './Rol';
 import { rolCrear, rolDeleteById, rolActualizar, rolGetByRol } from '../../../api/rol'
 import Select from 'react-select';
 import { permisoGetAll } from '../../../api/permiso';
-import { rolPermisoViewGetByRol } from '../../../api/rolPermiso';
+import { rolPermisoAsignar, rolPermisoDeshabilitar, rolPermisoViewGetByRol } from '../../../api/rolPermiso';
 
 export default function RolABM() {
   const { state, dispatch } = useContext(RolEstado);
@@ -79,12 +79,28 @@ export default function RolABM() {
 
   const asignarPermiso = async () => {
     console.log("permisoasignar", permisoAsingnar)
+    try {
+      await rolPermisoAsignar({ rol_id: valoresIniciales.id, permiso_id: permisoAsingnar })
+      buscarPermisoRol();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
   }
 
   const deshabilitarPermiso = (id) => e => {
     console.log("deshabilitarPermiso", id)
+    deshabilitar(id)
   }
 
+  const deshabilitar = async (id) => {
+    try {
+      const respuesta = await rolPermisoDeshabilitar(id)
+      buscarPermisoRol();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
+  }
+  
   return (
     <Row className="justify-content-center">
       <Col lg="6" xl="6">

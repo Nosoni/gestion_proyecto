@@ -7,7 +7,7 @@ import { Accion, UsuarioEstado } from './Usuario';
 import { usuarioCrear, usuarioDeleteById, usuarioActualizar, usuarioGetByUsuario } from '../../../api/usuario'
 import Select from 'react-select';
 import { rolGetAll } from '../../../api/rol';
-import { usuarioRolAsignar, usuarioRolViewGetByUsuario } from '../../../api/usuarioRol';
+import { usuarioRolAsignar, usuarioRolDeshabilitar, usuarioRolViewGetByUsuario } from '../../../api/usuarioRol';
 
 export default function UsuarioABM() {
   const { state, dispatch } = useContext(UsuarioEstado);
@@ -27,16 +27,13 @@ export default function UsuarioABM() {
   const buscarRolUsuario = async () => {
     const respuesta = await usuarioRolViewGetByUsuario(valoresIniciales.id)
     setRolesDelUsuario(respuesta)
-    console.log("buscarRolUsuario", respuesta)
   }
 
   useEffect(() => {
-    console.log("useEffect state", state)
     setValoresIniciales(state.seleccionado)
   }, [state])
 
   useEffect(() => {
-    console.log("useEffect valoresIniciales", valoresIniciales)
     buscarRoles()
     if (valoresIniciales.id) {
       buscarRolUsuario()
@@ -81,6 +78,7 @@ export default function UsuarioABM() {
       await usuarioDeleteById(valoresIniciales.id)
       actualizarSelecion({})
       setUsuarioLocal({})
+      setRolesDelUsuario({})
     } catch (error) {
       console.log("ocurrio un error")
     }
@@ -88,16 +86,25 @@ export default function UsuarioABM() {
 
   const asignarRol = async () => {
     console.log("rolasignar", rolAsignar)
-    // try {
-    //   const respuesta = await usuarioRolAsignar()
-
-    // } catch (error) {
-    //   console.log("ocurrio un error")
-    // }
+    try {
+      await usuarioRolAsignar({ usuario_id: valoresIniciales.id, rol_id: rolAsignar })
+      buscarRolUsuario();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
   }
 
-  const deshabilitarRol = (id) => e => {
-    console.log("deshabilitarRol", id)
+  const deshabilitarRol = (usuario_rol_id) => e => {
+    deshabilitar(usuario_rol_id)
+  }
+
+  const deshabilitar = async (id) => {
+    try {
+      const respuesta = await usuarioRolDeshabilitar(id)
+      buscarRolUsuario();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
   }
 
   return (<div>
@@ -178,9 +185,9 @@ export default function UsuarioABM() {
                   {
                     rolesDelUsuario.length > 0 ?
                       rolesDelUsuario.map(dato =>
-                        <tr key={dato.rol_id}>
+                        <tr key={dato.usuario_rol_id}>
                           <td> {dato.nombre} </td>
-                          <td> <Button size="sm" onClick={deshabilitarRol(dato.rol_id)}>Eliminar</Button> </td>
+                          <td> <Button size="sm" onClick={deshabilitarRol(dato.usuario_rol_id)}>Eliminar</Button> </td>
                         </tr>
                       ) :
                       <>
