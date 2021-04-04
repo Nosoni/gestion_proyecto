@@ -7,25 +7,26 @@ import { Accion, UsuarioEstado } from './Usuario';
 import { usuarioCrear, usuarioDeleteById, usuarioActualizar, usuarioGetByUsuario } from '../../../api/usuario'
 import Select from 'react-select';
 import { rolGetAll } from '../../../api/rol';
-import { usuarioRolAsignar, usuarioRolViewGetByUsuario } from '../../../api/usuarioRol';
+import { usuarioRolAsignar, usuarioRolDeshabilitar, usuarioRolViewGetByUsuario } from '../../../api/usuarioRol';
 
 export default function UsuarioABM() {
   const { state, dispatch } = useContext(UsuarioEstado);
   const [valoresIniciales, setValoresIniciales] = useState(state.seleccionado)
   const [usuarioLocal, setUsuarioLocal] = useState({})
-  const [rolOpciones, setRolOpciones] = useState([])
+  const [selectOpciones, setSelectOpciones] = useState([])
   const [rolAsignar, setRolAsignar] = useState()
-  const [rolUsuario, setRolUsuario] = useState([])
+  const [rolesDelUsuario, setRolesDelUsuario] = useState([])
 
-  const buscarRol = async () => {
+  const buscarRoles = async () => {
     const respuesta = await rolGetAll()
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
-    setRolOpciones(opciones)
+    console.log("buscarRoles", opciones)
+    setSelectOpciones(opciones)
   }
 
   const buscarRolUsuario = async () => {
     const respuesta = await usuarioRolViewGetByUsuario(valoresIniciales.id)
-    setRolUsuario(respuesta)
+    setRolesDelUsuario(respuesta)
   }
 
   useEffect(() => {
@@ -33,16 +34,14 @@ export default function UsuarioABM() {
   }, [state])
 
   useEffect(() => {
+    buscarRoles()
     if (valoresIniciales.id) {
       buscarRolUsuario()
     }
-  })
-
-  useEffect(() => {
-    buscarRol()
-  })
+  }, [valoresIniciales])
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
+
   const crearUsuario = async () => {
     try {
       if (!usuarioLocal.usuario || usuarioLocal.usuario.length === 0) {
@@ -79,18 +78,33 @@ export default function UsuarioABM() {
       await usuarioDeleteById(valoresIniciales.id)
       actualizarSelecion({})
       setUsuarioLocal({})
+      setRolesDelUsuario({})
     } catch (error) {
       console.log("ocurrio un error")
     }
   }
 
   const asignarRol = async () => {
-    // try {
-    //   const respuesta = await usuarioRolAsignar()
+    console.log("rolasignar", rolAsignar)
+    try {
+      await usuarioRolAsignar({ usuario_id: valoresIniciales.id, rol_id: rolAsignar })
+      buscarRolUsuario();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
+  }
 
-    // } catch (error) {
-    //   console.log("ocurrio un error")
-    // }
+  const deshabilitarRol = (usuario_rol_id) => e => {
+    deshabilitar(usuario_rol_id)
+  }
+
+  const deshabilitar = async (id) => {
+    try {
+      const respuesta = await usuarioRolDeshabilitar(id)
+      buscarRolUsuario();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
   }
 
   return (<div>
@@ -150,7 +164,7 @@ export default function UsuarioABM() {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  options={rolOpciones}
+                  options={selectOpciones}
                   onChange={(seleccion) => setRolAsignar(seleccion.value)}
                   name="rol"
                 />
@@ -169,10 +183,20 @@ export default function UsuarioABM() {
                 </thead>
                 <tbody>
                   {
-                    rolUsuario.map(dato => <tr key={dato.rol_id}>
-                      <td> {dato.nombre} </td>
-                      <td> <Button size="sm" onClick={() => { }}>Eliminar</Button> </td>
-                    </tr>)
+                    rolesDelUsuario.length > 0 ?
+                      rolesDelUsuario.map(dato =>
+                        <tr key={dato.usuario_rol_id}>
+                          <td> {dato.nombre} </td>
+                          <td> <Button size="sm" onClick={deshabilitarRol(dato.usuario_rol_id)}>Eliminar</Button> </td>
+                        </tr>
+                      ) :
+                      <>
+                        <tr>
+                          <td> Sin datos... </td>
+                          <td />
+                          <td />
+                        </tr>
+                      </>
                   }
                 </tbody>
               </Table>

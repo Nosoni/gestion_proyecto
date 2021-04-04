@@ -7,27 +7,25 @@ import { Accion, RolEstado } from './Rol';
 import { rolCrear, rolDeleteById, rolActualizar, rolGetByRol } from '../../../api/rol'
 import Select from 'react-select';
 import { permisoGetAll } from '../../../api/permiso';
-import { rolPermisoViewGetByRol } from '../../../api/rolPermiso';
-
+import { rolPermisoAsignar, rolPermisoDeshabilitar, rolPermisoViewGetByRol } from '../../../api/rolPermiso';
 
 export default function RolABM() {
   const { state, dispatch } = useContext(RolEstado);
   const [valoresIniciales, setValoresIniciales] = useState(state.seleccionado)
   const [rolLocal, setRolLocal] = useState({})
-  const [permisoOpciones, setPermisoOpciones] = useState([])
+  const [selectOpciones, setSelectOpciones] = useState([])
   const [permisoAsingnar, setPermisoAsignar] = useState()
-  const [permisoRol, setPermisoRol] = useState([])
+  const [permisosDelRol, setPermisosDelRol] = useState([])
 
-  const buscarPermiso = async () => {
+  const buscarPermisos = async () => {
     const respuesta = await permisoGetAll()
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
-    setPermisoOpciones(opciones)
+    setSelectOpciones(opciones)
   }
 
   const buscarPermisoRol = async () => {
-    console.log(valoresIniciales.id)
-    // const respuesta = await rolPermisoViewGetByRol(valoresIniciales.id)
-    // setPermisoRol(respuesta)
+    const respuesta = await rolPermisoViewGetByRol(valoresIniciales.id)
+    setPermisosDelRol(respuesta)
   }
 
   useEffect(() => {
@@ -35,15 +33,11 @@ export default function RolABM() {
   }, [state])
 
   useEffect(() => {
+    buscarPermisos()
     if (valoresIniciales.id) {
-      console.log("buscarPermiso")
       buscarPermisoRol()
     }
   }, [valoresIniciales])
-
-  useEffect(() => {
-    buscarPermiso()
-  })
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
 
@@ -77,92 +71,126 @@ export default function RolABM() {
       await rolDeleteById(valoresIniciales.id)
       actualizarSelecion({})
       setRolLocal({})
+      setPermisosDelRol([])
     } catch (error) {
       console.log("ocurrio un error")
     }
   }
 
+  const asignarPermiso = async () => {
+    console.log("permisoasignar", permisoAsingnar)
+    try {
+      await rolPermisoAsignar({ rol_id: valoresIniciales.id, permiso_id: permisoAsingnar })
+      buscarPermisoRol();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
+  }
+
+  const deshabilitarPermiso = (id) => e => {
+    console.log("deshabilitarPermiso", id)
+    deshabilitar(id)
+  }
+
+  const deshabilitar = async (id) => {
+    try {
+      const respuesta = await rolPermisoDeshabilitar(id)
+      buscarPermisoRol();
+    } catch (error) {
+      console.log("ocurrio un error")
+    }
+  }
+  
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col lg="6" xl="6">
-          <Card className="card-user">
-            <CardHeader className="card-header">
-              FORMULARIO ROL
+    <Row className="justify-content-center">
+      <Col lg="6" xl="6">
+        <Card className="card-user">
+          <CardHeader className="card-header">
+            FORMULARIO ROL
           </CardHeader>
-            <CardBody>
-              <Form>
-                <Row className="justify-content-center">
-                  <Col md="6">
-                    <FormGroup>
-                      <label >Nombre</label>
-                      <Input defaultValue={valoresIniciales.nombre}
-                        placeholder="Ingrese nombre"
-                        type="text"
-                        onChange={(evento) => { setRolLocal({ ...rolLocal, nombre: evento.target.value }) }} />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row className="justify-content-center">
+          <CardBody>
+            <Form>
+              <Row className="justify-content-center">
+                <Col md="6">
+                  <FormGroup>
+                    <label >Nombre</label>
+                    <Input defaultValue={valoresIniciales.nombre}
+                      placeholder="Ingrese nombre"
+                      type="text"
+                      onChange={(evento) => { setRolLocal({ ...rolLocal, nombre: evento.target.value }) }} />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row className="justify-content-center">
+                {
+                  valoresIniciales.id ?
+                    <>
+                      <Button size="sm" onClick={() => editarRol()}> Editar </Button>
+                      <Button className="btn-danger" size="sm" onClick={() => eliminarRol()}> Eliminar </Button>
+                    </> :
+                    <Button size="sm" onClick={() => crearRol()}> Crear </Button>
+                }
+                <Button className="btn-warning" size="sm" onClick={() => actualizarSelecion({})}> Cancelar </Button>
+              </Row>
+            </Form>
+          </CardBody>
+        </Card>
+      </Col>
+      <Col lg="6" xl="6">
+        <Card className="card-user">
+          <CardHeader className="card-header">
+            PERMISOS DEL ROL
+          </CardHeader>
+          <CardBody>
+            <Row className="align-items-center">
+              <Col lg="1" xl="1">
+                <label>Permiso</label>
+              </Col>
+              <Col lg="6" xl="6">
+                <Select
+                  className="basic-single"
+                  classNamePrefix="select"
+                  options={selectOpciones}
+                  onChange={(seleccion) => setPermisoAsignar(seleccion.value)}
+                  name="permiso"
+                />
+              </Col>
+              <Col lg="4" xl="4">
+                <Button size="sm" onClick={asignarPermiso}>Asignar Permiso</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Table className="table">
+                <thead className="text-primary">
+                  <tr>
+                    <th className="header">Permiso</th>
+                    <th className="header">Descripción</th>
+                    <th className="header">Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
                   {
-                    valoresIniciales.id ?
+                    permisosDelRol.length > 0 ?
+                      permisosDelRol.map(dato =>
+                        <tr key={dato.rol_permiso_id}>
+                          <td> {dato.permiso_nombre} </td>
+                          <td> {dato.permiso_descripcion} </td>
+                          <td> <Button size="sm" onClick={deshabilitarPermiso(dato.rol_permiso_id)}>Eliminar</Button> </td>
+                        </tr>) :
                       <>
-                        <Button size="sm" onClick={() => editarRol()}> Editar </Button>
-                        <Button className="btn-danger" size="sm" onClick={() => eliminarRol()}> Eliminar </Button>
-                      </> :
-                      <Button size="sm" onClick={() => crearRol()}> Crear </Button>
+                        <tr>
+                          <td> Sin datos... </td>
+                          <td />
+                          <td />
+                        </tr>
+                      </>
                   }
-                  <Button className="btn-warning" size="sm" onClick={() => actualizarSelecion({})}> Cancelar </Button>
-                </Row>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col lg="6" xl="6">
-          <Card className="card-user">
-            <CardHeader className="card-header">
-              PERMISOS DEL ROL
-          </CardHeader>
-            <CardBody>
-              <Row className="align-items-center">
-                <Col lg="1" xl="1">
-                  <label>Permiso</label>
-                </Col>
-                <Col lg="6" xl="6">
-                  <Select
-                    className="basic-single"
-                    classNamePrefix="select"
-                    options={permisoOpciones}
-                    onChange={(seleccion) => setPermisoAsignar(seleccion.value)}
-                    name="rol"
-                  />
-                </Col>
-                <Col lg="3" xl="3">
-                  <Button size="sm" onClick={() => { }}>Asignar Permiso</Button>
-                </Col>
-              </Row>
-              <Row>
-                <Table className="table">
-                  <thead className="text-primary">
-                    <tr>
-                      <th className="header">Permiso</th>
-                      <th className="header">Eliminar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      permisoRol.map(dato => <tr key={dato}>
-                        <td> {dato.nombre} </td>
-                        <td> <Button size="sm" onClick={() => { }}>Eliminar`</Button> </td>
-                      </tr>)
-                    }
-                  </tbody>
-                </Table>
-              </Row>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+                </tbody>
+              </Table>
+            </Row>
+          </CardBody>
+        </Card>
+      </Col>
+    </Row>
   )
 }
