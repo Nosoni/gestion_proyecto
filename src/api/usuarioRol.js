@@ -14,8 +14,33 @@ const usuarioRolGetByUsuario = async (usuario_id) => {
     .then(response => response.json())
 };
 
-const usuarioRolAsignar = async () => {
-  return []
+const usuarioRolAsignar = async (usuarioRol) => {
+  const url = `${server}/${servicio}`;
+  var requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...usuarioRol, activo: true })
+  };
+
+  return await fetch(url, requestOptions)
+}
+
+const usuarioRolDeshabilitar = async (id) => {
+  var where = `?id=eq.${id}`
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ activo: false })
+  };
+  console.log(url)
+  console.log(requestOptions.body)
+
+  return await fetch(url, requestOptions)
 }
 
 const usuarioRolViewGetByUsuario = async (usuario_id) => {
@@ -30,4 +55,4 @@ const usuarioRolViewGetByUsuario = async (usuario_id) => {
     .then(response => response.json())
 }
 
-export { usuarioRolGetByUsuario, usuarioRolAsignar, usuarioRolViewGetByUsuario };
+export { usuarioRolGetByUsuario, usuarioRolAsignar, usuarioRolDeshabilitar, usuarioRolViewGetByUsuario };
