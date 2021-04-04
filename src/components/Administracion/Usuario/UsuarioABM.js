@@ -20,7 +20,6 @@ export default function UsuarioABM() {
   const buscarRoles = async () => {
     const respuesta = await rolGetAll()
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
-    console.log("buscarRoles", opciones)
     setSelectOpciones(opciones)
   }
 
@@ -85,7 +84,6 @@ export default function UsuarioABM() {
   }
 
   const asignarRol = async () => {
-    console.log("rolasignar", rolAsignar)
     try {
       await usuarioRolAsignar({ usuario_id: valoresIniciales.id, rol_id: rolAsignar })
       buscarRolUsuario();

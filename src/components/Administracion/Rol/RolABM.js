@@ -78,7 +78,6 @@ export default function RolABM() {
   }
 
   const asignarPermiso = async () => {
-    console.log("permisoasignar", permisoAsingnar)
     try {
       await rolPermisoAsignar({ rol_id: valoresIniciales.id, permiso_id: permisoAsingnar })
       buscarPermisoRol();
@@ -88,7 +87,6 @@ export default function RolABM() {
   }
 
   const deshabilitarPermiso = (id) => e => {
-    console.log("deshabilitarPermiso", id)
     deshabilitar(id)
   }
 
