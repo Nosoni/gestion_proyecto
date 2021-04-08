@@ -98,7 +98,7 @@ export default function UsuarioABM() {
 
   const deshabilitar = async (id) => {
     try {
-      const respuesta = await usuarioRolDeshabilitar(id)
+      await usuarioRolDeshabilitar(id)
       buscarRolUsuario();
     } catch (error) {
       console.log("ocurrio un error")

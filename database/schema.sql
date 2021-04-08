@@ -36,19 +36,15 @@ CREATE TABLE public.usuario_rol (
 COMMENT ON TABLE public.usuario_rol IS 'roles asignados a usuarios';
 
 --views
-create or replace
-view rol_permiso_view as
-select
-	rp.id as rol_permiso_id,
-	rp.rol_id,
-	p.id as permiso_id,
-	p.nombre as permiso_nombre ,
-	p.descripcion as permiso_descripcion,
-	rp.activo as rol_permiso_activo
-from
-	rol_permiso rp
-join permiso p on
-	rp.permiso_id = p.id
+CREATE OR REPLACE VIEW public.rol_permiso_view
+AS SELECT rp.id AS rol_permiso_id,
+    rp.rol_id,
+    rp.permiso_id,
+    p.nombre AS permiso_nombre,
+    p.descripcion AS permiso_descripcion,
+    rp.activo AS rol_permiso_activo
+   FROM rol_permiso rp
+     JOIN permiso p ON rp.permiso_id = p.id;
 
 CREATE OR REPLACE VIEW public.usuario_rol_view
 AS SELECT ur.id AS usuario_rol_id,

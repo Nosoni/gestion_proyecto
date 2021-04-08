@@ -92,7 +92,7 @@ export default function RolABM() {
 
   const deshabilitar = async (id) => {
     try {
-      const respuesta = await rolPermisoDeshabilitar(id)
+      await rolPermisoDeshabilitar(id)
       buscarPermisoRol();
     } catch (error) {
       console.log("ocurrio un error")

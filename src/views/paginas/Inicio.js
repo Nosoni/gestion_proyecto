@@ -80,7 +80,7 @@ export default function Inicio(props) {
                   {
                     permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_DESARROLLO) ?
                       <Col lg="4" xl="4">
-                        <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/404")}>
+                        <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/desarrollo")}>
                           <CardBody>
                             <Row>
                               <div className="col">
