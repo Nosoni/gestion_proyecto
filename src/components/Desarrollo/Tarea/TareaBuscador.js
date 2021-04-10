@@ -3,24 +3,25 @@ import {
   Row, Col, Card, CardHeader, CardBody, Form, FormGroup, Input, Button,
   Table,
 } from 'reactstrap'
-import { rolGetByRol } from '../../../api/rol'
-import { Accion, RolEstado } from "./Rol"
+import { tareaGetByDescripcion } from '../../../api/tarea'
+import { Accion, TareaEstado } from "./Tarea"
 
-export default function RolBuscador() {
-  const { dispatch } = useContext(RolEstado);
+export default function TareaBuscador() {
+  const { dispatch } = useContext(TareaEstado);
   const [resultado, setResultado] = useState([])
   const [busqueda, setBusqueda] = useState("")
 
+  const inputTarea = (event) => setBusqueda(event.target.value)
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
 
-  const buscarRoles = async () => {
-    const respuesta = await rolGetByRol(busqueda)
+  const buscarTareas = async () => {
+    const respuesta = await tareaGetByDescripcion(busqueda)
     setResultado(respuesta)
   }
 
   const editar = id => e => {
-    const rol = resultado.find(rol => rol.id === id)
-    actualizarSelecion(rol)
+    const tarea = resultado.find(tarea => tarea.id === id)
+    actualizarSelecion(tarea)
   }
 
   return (
@@ -29,20 +30,20 @@ export default function RolBuscador() {
         <Col lg="6" xl="6">
           <Card className="card-user">
             <CardHeader className="card-header">
-              ROL BUSCADOR
+              TAREA BUSCADOR
             </CardHeader>
             <CardBody>
               <Form>
                 <Row className="justify-content-left">
                   <Col md="6">
                     <FormGroup>
-                      <label >Rol</label>
-                      <Input placeholder="Ingrese nombre" type="text" onChange={(event) => setBusqueda(event.target.value)} />
+                      <label >Tarea</label>
+                      <Input placeholder="Ingrese tarea" type="text" onChange={inputTarea} />
                     </FormGroup>
                   </Col>
                 </Row>
                 <Row className="justify-content-center">
-                  <Button size="sm" onClick={buscarRoles}>
+                  <Button size="sm" onClick={buscarTareas}>
                     Buscar
                   </Button>
                   <Button className="reset btn-warning" size="sm">
@@ -62,19 +63,21 @@ export default function RolBuscador() {
               <Table className="table">
                 <thead className="text-primary">
                   <tr>
-                    <th className="header">Rol</th>
-                    <th className="header">Ver</th>
+                    <th className="header">Tarea</th>
+                    <th className="header">Estado</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
                     resultado.length > 0 ?
                       resultado.map(dato => <tr key={dato.id}>
-                        <td> {dato.nombre} </td>
+                        <td> {dato.descripcion} </td>
+                        <td> {dato.estado} </td>
                         <td> <Button size="sm" onClick={editar(dato.id)}>Editar</Button> </td>
                       </tr>) :
                       <tr>
                         <td> Sin datos... </td>
+                        <td />
                         <td />
                       </tr>
                   }

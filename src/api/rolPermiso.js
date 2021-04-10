@@ -14,7 +14,6 @@ const rolPermisoGetByRol = async (rol_id) => {
     .then(response => response.json())
 };
 
-
 const rolPermisoAsignar = async (usuarioRol) => {
   const url = `${server}/${servicio}`;
   var requestOptions = {

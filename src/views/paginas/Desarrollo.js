@@ -1,13 +1,13 @@
 import React from "react";
 import AdminNav from "../../components/Administracion/AdminNav"
 import { Route, Switch, Redirect } from "react-router-dom";
-import Usuario from "../../components/Administracion/Usuario/Usuario";
-import Rol from "../../components/Administracion/Rol/Rol";
+import Proyecto from "../../components/Desarrollo/Proyecto/Proyecto";
+import Tarea from "../../components/Desarrollo/Tarea/Tarea";
 
-export default function Administracion(props) {
+export default function Desarrollo(props) {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/administracion") {
+      if (prop.layout === "/desarrollo") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -29,7 +29,7 @@ export default function Administracion(props) {
           <div className="header bg-gradient-info pb-8 pt-md">
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="*" to="/administracion/usuario" />
+              <Redirect from="*" to="/desarrollo/Proyecto" />
             </Switch>
           </div>
         </div>
@@ -40,17 +40,17 @@ export default function Administracion(props) {
 
 var routes = [
   {
-    path: "/usuario",
-    name: "Usuario",
+    path: "/proyecto",
+    name: "Proyecto",
     icon: "ni ni-planet text-blue",
-    component: Usuario,
-    layout: "/administracion",
+    component: Proyecto,
+    layout: "/desarrollo",
   },
   {
-    path: "/rol",
-    name: "Rol",
+    path: "/tarea",
+    name: "Tarea",
     icon: "ni ni-pin-3 text-orange",
-    component: Rol,
-    layout: "/administracion",
+    component: Tarea,
+    layout: "/desarrollo",
   },
 ];

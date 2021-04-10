@@ -37,8 +37,6 @@ const usuarioRolDeshabilitar = async (id) => {
     },
     body: JSON.stringify({ activo: false })
   };
-  console.log(url)
-  console.log(requestOptions.body)
 
   return await fetch(url, requestOptions)
 }

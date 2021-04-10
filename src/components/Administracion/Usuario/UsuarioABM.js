@@ -20,7 +20,6 @@ export default function UsuarioABM() {
   const buscarRoles = async () => {
     const respuesta = await rolGetAll()
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.nombre } })
-    console.log("buscarRoles", opciones)
     setSelectOpciones(opciones)
   }
 
@@ -85,7 +84,6 @@ export default function UsuarioABM() {
   }
 
   const asignarRol = async () => {
-    console.log("rolasignar", rolAsignar)
     try {
       await usuarioRolAsignar({ usuario_id: valoresIniciales.id, rol_id: rolAsignar })
       buscarRolUsuario();
@@ -100,7 +98,7 @@ export default function UsuarioABM() {
 
   const deshabilitar = async (id) => {
     try {
-      const respuesta = await usuarioRolDeshabilitar(id)
+      await usuarioRolDeshabilitar(id)
       buscarRolUsuario();
     } catch (error) {
       console.log("ocurrio un error")
@@ -153,7 +151,7 @@ export default function UsuarioABM() {
       <Col lg="6" xl="6">
         <Card className="card-user">
           <CardHeader className="card-header">
-            ROL DEL USUARIO
+            ROLES DEL USUARIO
           </CardHeader>
           <CardBody>
             <Row className="align-items-center">

@@ -32,6 +32,7 @@ import Inicio from "./views/paginas/Inicio.js";
 import NotFound from "./views/paginas/NotFound.js";
 import Administracion from "./views/paginas/Administracion.js";
 import { SesionContext } from "./context.js"
+import Desarrollo from "views/paginas/Desarrollo.js";
 
 ReactDOM.render(
   <SesionContext>
@@ -63,10 +64,14 @@ ReactDOM.render(
           render={(props) => <Administracion {...props} />}
         />
         <Route
+          path="/desarrollo"
+          render={(props) => <Desarrollo {...props} />}
+        />
+        <Route
           path="/404"
           render={(props) => <NotFound {...props} />}
         />
-        <Redirect from="/" to="/components" />
+        <Redirect from="/" to="/login" />
       </Switch>
     </BrowserRouter>
   </SesionContext>,
