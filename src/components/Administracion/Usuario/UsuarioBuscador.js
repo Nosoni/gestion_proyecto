@@ -69,10 +69,15 @@ export default function UsuarioBuscador() {
                 </thead>
                 <tbody>
                   {
-                    resultado.map(dato => <tr key={dato.id}>
-                      <td> {dato.usuario} </td>
-                      <td> <Button size="sm" onClick={editar(dato.id)}>Editar</Button> </td>
-                    </tr>)
+                    resultado.length > 0 ?
+                      resultado.map(dato => <tr key={dato.id}>
+                        <td> {dato.usuario} </td>
+                        <td> <Button size="sm" onClick={editar(dato.id)}>Editar</Button> </td>
+                      </tr>) :
+                      <tr>
+                        <td> Sin datos... </td>
+                        <td />
+                      </tr>
                   }
                 </tbody>
               </Table>

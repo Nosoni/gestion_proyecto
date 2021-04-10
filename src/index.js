@@ -71,7 +71,7 @@ ReactDOM.render(
           path="/404"
           render={(props) => <NotFound {...props} />}
         />
-        <Redirect from="/" to="/components" />
+        <Redirect from="/" to="/login" />
       </Switch>
     </BrowserRouter>
   </SesionContext>,

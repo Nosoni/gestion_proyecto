@@ -1,8 +1,8 @@
 import React from "react";
 import AdminNav from "../../components/Administracion/AdminNav"
 import { Route, Switch, Redirect } from "react-router-dom";
-import Proyecto from "components/Desarrollo/Proyecto/Proyecto";
-import Tarea from "components/Desarrollo/Tarea/Tarea";
+import Proyecto from "../../components/Desarrollo/Proyecto/Proyecto";
+import Tarea from "../../components/Desarrollo/Tarea/Tarea";
 
 export default function Desarrollo(props) {
   const getRoutes = (routes) => {

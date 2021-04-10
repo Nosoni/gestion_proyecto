@@ -14,7 +14,7 @@ export default function RolABM() {
   const [valoresIniciales, setValoresIniciales] = useState(state.seleccionado)
   const [rolLocal, setRolLocal] = useState({})
   const [selectOpciones, setSelectOpciones] = useState([])
-  const [permisoAsingnar, setPermisoAsignar] = useState()
+  const [permisoAsignar, setPermisoAsignar] = useState()
   const [permisosDelRol, setPermisosDelRol] = useState([])
 
   const buscarPermisos = async () => {
@@ -79,7 +79,7 @@ export default function RolABM() {
 
   const asignarPermiso = async () => {
     try {
-      await rolPermisoAsignar({ rol_id: valoresIniciales.id, permiso_id: permisoAsingnar })
+      await rolPermisoAsignar({ rol_id: valoresIniciales.id, permiso_id: permisoAsignar })
       buscarPermisoRol();
     } catch (error) {
       console.log("ocurrio un error")

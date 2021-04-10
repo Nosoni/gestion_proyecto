@@ -151,7 +151,7 @@ export default function UsuarioABM() {
       <Col lg="6" xl="6">
         <Card className="card-user">
           <CardHeader className="card-header">
-            ROL DEL USUARIO
+            ROLES DEL USUARIO
           </CardHeader>
           <CardBody>
             <Row className="align-items-center">
