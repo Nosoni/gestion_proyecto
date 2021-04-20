@@ -57,6 +57,20 @@ CREATE TABLE public.proyecto_tarea (
 	activo bool NOT NULL
 );
 
+CREATE TABLE public.linea_base (
+	id serial NOT NULL,
+	nombre varchar NOT NULL,
+	estado varchar NOT NULL,
+	activo bool NOT NULL
+);
+
+CREATE TABLE public.linea_base_tarea (
+	id serial NOT NULL,
+	linea_base_id int4 NOT NULL,
+	tarea_id int4 NOT NULL,
+	activo bool NOT NULL
+);
+
 --views
 CREATE OR REPLACE VIEW public.rol_permiso_view
 AS SELECT rp.id AS rol_permiso_id,
@@ -86,3 +100,16 @@ AS SELECT pt.id AS proyecto_tarea_id,
     pt.activo AS proyecto_tarea_activo
    FROM proyecto_tarea pt
      JOIN tarea t ON pt.tarea_id = t.id
+
+CREATE OR REPLACE VIEW public.linea_base_tarea_view
+AS SELECT lbt.id AS linea_base_tarea_id,
+    lb.id AS linea_base_id,
+    lb.nombre AS linea_base_nombre,
+    lb.estado AS linea_base_estado,
+    t.id AS tarea_id,
+    t.descripcion AS tarea_descripcion,
+    t.estado AS tarea_estado,
+    lbt.activo AS linea_base_tarea_activo
+   FROM linea_base_tarea lbt
+     JOIN linea_base lb ON lbt.linea_base_id = lb.id
+     JOIN tarea t ON lbt.tarea_id = t.id;

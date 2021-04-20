@@ -32,6 +32,9 @@
     "blk-design-system-react"
   ],
   "dependencies": {
+    "@devexpress/dx-react-core": "^2.7.5",
+    "@devexpress/dx-react-grid": "^2.7.5",
+    "@devexpress/dx-react-grid-bootstrap4": "^2.7.5",
     "@testing-library/jest-dom": "5.11.6",
     "@testing-library/react": "11.2.2",
     "@testing-library/user-event": "12.2.2",
