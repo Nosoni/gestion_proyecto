@@ -13,6 +13,7 @@ export default function UsuarioBuscador() {
 
   const inputProyecto = (event) => setBusqueda(event.target.value)
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
+  const mostrarABM = () => dispatch({ type: Accion.MOSTRAR_ABM });
 
   const buscarProyectos = async () => {
     const respuesta = await proyectoGetByProyecto(busqueda)
@@ -22,11 +23,16 @@ export default function UsuarioBuscador() {
   const editar = id => e => {
     const proyecto = resultado.find(proyecto => proyecto.id === id)
     actualizarSelecion(proyecto)
+    mostrarABM()
+  }
+
+  const nuevo = () => {
+    mostrarABM()
   }
 
   return (
     <div>
-      <Row>
+      <Row className="justify-content-center" >
         <Col lg="6" xl="6">
           <Card className="card-user">
             <CardHeader className="card-header">
@@ -49,11 +55,16 @@ export default function UsuarioBuscador() {
                   <Button className="reset btn-warning" size="sm">
                     Cancelar
                   </Button>
+                  <Button className="btn-success" size="sm" onClick={nuevo}>
+                    Nuevo
+                  </Button>
                 </Row>
               </Form>
             </CardBody>
           </Card>
         </Col>
+      </Row>
+      <Row className="justify-content-center" >
         <Col lg="6" xl="6">
           <Card className="card-user">
             <CardHeader className="card-header">

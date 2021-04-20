@@ -8,14 +8,16 @@ export const UsuarioEstado = createContext(null);
 export default function Usuario(props) {
 
   const [state, dispatch] = useReducer(reducer, {
-    seleccionado: {}
+    seleccionado: {},
+    mostarBuscardo: true,
+    mostrarABM: false,
   });
 
   return (
     <React.Fragment>
       <UsuarioEstado.Provider value={{ state, dispatch }}>
-        <UsuarioBuscador />
-        <UsuarioABM />
+        {state.mostarBuscardo && <UsuarioBuscador />}
+        {state.mostrarABM && <UsuarioABM />}
       </UsuarioEstado.Provider>
     </React.Fragment >
   )
@@ -25,6 +27,10 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case Accion.SELECCIONADO:
       return { ...state, seleccionado: action.payload }
+    case Accion.MOSTRAR_ABM:
+      return { ...state, mostarBuscardo: false, mostrarABM: true }
+    case Accion.MOSTRAR_BUSCADOR:
+      return { ...state, mostarBuscardo: true, mostrarABM: false }
     default:
       return state
   }
@@ -32,4 +38,6 @@ export const reducer = (state, action) => {
 
 export const Accion = {
   SELECCIONADO: "seleccionado",
+  MOSTRAR_ABM: "mostrarABM",
+  MOSTRAR_BUSCADOR: "mostrarBuscador",
 };

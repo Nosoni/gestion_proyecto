@@ -13,6 +13,7 @@ export default function TareaBuscador() {
 
   const inputTarea = (event) => setBusqueda(event.target.value)
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
+  const mostrarABM = () => dispatch({ type: Accion.MOSTRAR_ABM });
 
   const buscarTareas = async () => {
     const respuesta = await tareaGetByDescripcion(busqueda)
@@ -22,11 +23,16 @@ export default function TareaBuscador() {
   const editar = id => e => {
     const tarea = resultado.find(tarea => tarea.id === id)
     actualizarSelecion(tarea)
+    mostrarABM()
+  }
+
+  const nuevo = () => {
+    mostrarABM()
   }
 
   return (
     <div>
-      <Row>
+      <Row className="justify-content-center" >
         <Col lg="6" xl="6">
           <Card className="card-user">
             <CardHeader className="card-header">
@@ -49,11 +55,16 @@ export default function TareaBuscador() {
                   <Button className="reset btn-warning" size="sm">
                     Cancelar
                   </Button>
+                  <Button className="btn-success" size="sm" onClick={nuevo}>
+                    Nuevo
+                  </Button>
                 </Row>
               </Form>
             </CardBody>
           </Card>
         </Col>
+      </Row>
+      <Row className="justify-content-center" >
         <Col lg="6" xl="6">
           <Card className="card-user">
             <CardHeader className="card-header">
