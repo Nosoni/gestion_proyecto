@@ -48,6 +48,7 @@ export default function TareaABM() {
   }, [valoresIniciales])
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
+  const mostrarBuscador = () => dispatch({ type: Accion.MOSTRAR_BUSCADOR });
 
   const crearTarea = async () => {
     try {
@@ -91,6 +92,11 @@ export default function TareaABM() {
     }
   }
 
+  const cancelar = () => {
+    actualizarSelecion({})
+    mostrarBuscador()
+  }
+
   const asignarTareaPadre = async () => {
     try {
       await tareaActualizar({ id: valoresIniciales.id, id_tarea_padre: tareaAsignar })
@@ -114,108 +120,113 @@ export default function TareaABM() {
   }
 
   return (
-    <Row className="justify-content-center">
-      <Col lg="6" xl="6">
-        <Card className="card-user">
-          <CardHeader className="card-header">
-            FORMULARIO TAREA
+    <div>
+      <Row className="justify-content-center">
+        <Col lg="6" xl="6">
+          <Card className="card-user">
+            <CardHeader className="card-header">
+              FORMULARIO TAREA
           </CardHeader>
-          <CardBody>
-            <Form>
-              <Row className="justify-content-center">
-                <Col md="6">
-                  <FormGroup>
-                    <label >Descripción</label>
-                    <Input
-                      defaultValue={valoresIniciales.descripcion}
-                      placeholder="Ingrese descripción"
-                      type="text"
-                      onChange={(evento) => { setTareaLocal({ ...tareaLocal, descripcion: evento.target.value }) }} />
-                  </FormGroup>
+            <CardBody>
+              <Form>
+                <Row className="justify-content-center">
+                  <Col md="6">
+                    <FormGroup>
+                      <label >Descripción</label>
+                      <Input
+                        defaultValue={valoresIniciales.descripcion}
+                        placeholder="Ingrese descripción"
+                        type="text"
+                        onChange={(evento) => { setTareaLocal({ ...tareaLocal, descripcion: evento.target.value }) }} />
+                    </FormGroup>
+                  </Col>
+                  <Col lg="6" xl="6">
+                    <FormGroup>
+                      <label >Estado</label>
+                      <Select
+                        className="basic-single"
+                        classNamePrefix="select"
+                        onChange={(seleccion) => setTareaLocal({ ...tareaLocal, estado: seleccion.value })}
+                        options={estadosOpciones}
+                        name="estado"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center">
+                  {
+                    valoresIniciales.id ?
+                      <>
+                        <Button size="sm" onClick={() => editarTarea()}> Editar </Button>
+                        <Button className="btn-danger" size="sm" onClick={() => eliminarTarea()}> Eliminar </Button>
+                      </> :
+                      <Button size="sm" onClick={() => crearTarea()}> Crear </Button>
+                  }
+                  <Button className="btn-warning" size="sm" onClick={cancelar}> Cancelar </Button>
+                </Row>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col lg="6" xl="6">
+          <Card className="card-user">
+            <CardHeader className="card-header">
+              TAREA PADRE
+          </CardHeader>
+            <CardBody>
+              <Row className="align-items-center">
+                <Col lg="1" xl="1">
+                  <label>Tarea</label>
                 </Col>
                 <Col lg="6" xl="6">
-                  <FormGroup>
-                    <label >Estado</label>
-                    <Select
-                      className="basic-single"
-                      classNamePrefix="select"
-                      onChange={(seleccion) => setTareaLocal({ ...tareaLocal, estado: seleccion.value })}
-                      options={estadosOpciones}
-                      name="estado"
-                    />
-                  </FormGroup>
+                  <Select
+                    className="basic-single"
+                    classNamePrefix="select"
+                    options={selectOpciones}
+                    onChange={(seleccion) => setTareaAsignar(seleccion.value)}
+                    name="tarea"
+                  />
+                </Col>
+                <Col lg="4" xl="4">
+                  <Button size="sm" onClick={asignarTareaPadre}>Asignar tarea</Button>
                 </Col>
               </Row>
-              <Row className="justify-content-center">
-                {
-                  valoresIniciales.id ?
-                    <>
-                      <Button size="sm" onClick={() => editarTarea()}> Editar </Button>
-                      <Button className="btn-danger" size="sm" onClick={() => eliminarTarea()}> Eliminar </Button>
-                    </> :
-                    <Button size="sm" onClick={() => crearTarea()}> Crear </Button>
-                }
-                <Button className="btn-warning" size="sm" onClick={() => actualizarSelecion({})}> Cancelar </Button>
+              <Row>
+                <Table className="table">
+                  <thead className="text-primary">
+                    <tr>
+                      <th className="header">Descripción</th>
+                      <th className="header">Estado</th>
+                      <th className="header">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      tareaPadre.length > 0 ?
+                        tareaPadre.map(dato =>
+                          <tr key={dato.id}>
+                            <td> {dato.descripcion} </td>
+                            <td> {dato.estado} </td>
+                            <td> <Button size="sm" onClick={deshabilitarTareaPadre(dato.id)}>Eliminar</Button> </td>
+                          </tr>) :
+                        <>
+                          <tr>
+                            <td> Sin datos... </td>
+                            <td />
+                            <td />
+                          </tr>
+                        </>
+                    }
+                  </tbody>
+                </Table>
               </Row>
-            </Form>
-          </CardBody>
-        </Card>
-      </Col>
-      <Col lg="6" xl="6">
-        <Card className="card-user">
-          <CardHeader className="card-header">
-            TAREA PADRE
-          </CardHeader>
-          <CardBody>
-            <Row className="align-items-center">
-              <Col lg="1" xl="1">
-                <label>Tarea</label>
-              </Col>
-              <Col lg="6" xl="6">
-                <Select
-                  className="basic-single"
-                  classNamePrefix="select"
-                  options={selectOpciones}
-                  onChange={(seleccion) => setTareaAsignar(seleccion.value)}
-                  name="tarea"
-                />
-              </Col>
-              <Col lg="4" xl="4">
-                <Button size="sm" onClick={asignarTareaPadre}>Asignar tarea</Button>
-              </Col>
-            </Row>
-            <Row>
-              <Table className="table">
-                <thead className="text-primary">
-                  <tr>
-                    <th className="header">Descripción</th>
-                    <th className="header">Estado</th>
-                    <th className="header">Eliminar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    tareaPadre.length > 0 ?
-                      tareaPadre.map(dato =>
-                        <tr key={dato.id}>
-                          <td> {dato.descripcion} </td>
-                          <td> {dato.estado} </td>
-                          <td> <Button size="sm" onClick={deshabilitarTareaPadre(dato.id)}>Eliminar</Button> </td>
-                        </tr>) :
-                      <>
-                        <tr>
-                          <td> Sin datos... </td>
-                          <td />
-                          <td />
-                        </tr>
-                      </>
-                  }
-                </tbody>
-              </Table>
-            </Row>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+
   )
 }

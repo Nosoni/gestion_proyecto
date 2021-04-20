@@ -40,6 +40,7 @@ export default function UsuarioABM() {
   }, [valoresIniciales])
 
   const actualizarSelecion = (payload) => dispatch({ type: Accion.SELECCIONADO, payload });
+  const mostrarBuscador = () => dispatch({ type: Accion.MOSTRAR_BUSCADOR });
 
   const crearUsuario = async () => {
     try {
@@ -81,6 +82,11 @@ export default function UsuarioABM() {
     } catch (error) {
       console.log("ocurrio un error")
     }
+  }
+
+  const cancelar = () => {
+    actualizarSelecion({})
+    mostrarBuscador()
   }
 
   const asignarRol = async () => {
@@ -142,12 +148,14 @@ export default function UsuarioABM() {
                     </> :
                     <Button size="sm" onClick={() => crearUsuario()}> Crear </Button>
                 }
-                <Button className="btn-warning" size="sm" onClick={() => actualizarSelecion({})}> Cancelar </Button>
+                <Button className="btn-warning" size="sm" onClick={cancelar}> Cancelar </Button>
               </Row>
             </Form>
           </CardBody>
         </Card>
       </Col>
+    </Row>
+    <Row className="justify-content-center">
       <Col lg="6" xl="6">
         <Card className="card-user">
           <CardHeader className="card-header">
