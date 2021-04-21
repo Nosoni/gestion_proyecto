@@ -102,14 +102,15 @@ AS SELECT pt.id AS proyecto_tarea_id,
      JOIN tarea t ON pt.tarea_id = t.id
 
 CREATE OR REPLACE VIEW public.linea_base_tarea_view
-AS SELECT lbt.id AS linea_base_tarea_id,
-    lb.id AS linea_base_id,
+AS SELECT lb.id AS linea_base_id,
     lb.nombre AS linea_base_nombre,
     lb.estado AS linea_base_estado,
+    lb.activo AS linea_base_activo,
+    lbt.id AS linea_base_tarea_id,
+    lbt.activo AS linea_base_tarea_activo,
     t.id AS tarea_id,
     t.descripcion AS tarea_descripcion,
-    t.estado AS tarea_estado,
-    lbt.activo AS linea_base_tarea_activo
-   FROM linea_base_tarea lbt
-     JOIN linea_base lb ON lbt.linea_base_id = lb.id
-     JOIN tarea t ON lbt.tarea_id = t.id;
+    t.estado AS tarea_estado
+   FROM linea_base lb
+     LEFT JOIN linea_base_tarea lbt ON lb.id = lbt.linea_base_id
+     LEFT JOIN tarea t ON lbt.tarea_id = t.id;

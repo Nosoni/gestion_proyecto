@@ -19,7 +19,6 @@ export default function ProyectoABM() {
 
   const buscarTareas = async () => {
     const respuesta = await tareaGetAll()
-    console.log(respuesta)
     let opciones = respuesta.map(dato => { return { value: dato.id, label: dato.descripcion } })
     setSelectOpciones(opciones)
   }

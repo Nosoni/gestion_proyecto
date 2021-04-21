@@ -22,7 +22,7 @@ const tareaGetByDescripcion = async (descripcion) => {
   };
 
   return await fetch(url, requestOptions)
-    .then(response => response.json())
+  .then(response => response.json())
 };
 
 const tareaGetById = async (tarea_id) => {
@@ -60,8 +60,6 @@ const tareaActualizar = async (datos) => {
     },
     body: JSON.stringify(datos)
   };
-  console.log(url)
-  return []
   return await fetch(url, requestOptions)
 };
 
