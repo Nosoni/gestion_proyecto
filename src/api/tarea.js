@@ -1,4 +1,5 @@
 import { server } from "../constantes/constantes"
+import { lineaBaseTareaGetByTareaId } from "./lineaBaseTarea";
 const servicio = "tarea";
 
 const tareaGetAll = async () => {
@@ -51,6 +52,10 @@ const tareaCrear = async (datos) => {
 };
 
 const tareaActualizar = async (datos) => {
+  const lineaBaseTarea = await lineaBaseTareaGetByTareaId(datos.id)
+  if (lineaBaseTarea.length > 0) {
+    throw new Error ("Tarea no puede editarse. Está asignada a una LB.")
+  }
   var where = `?id=eq.${datos.id}`
   const url = `${server}/${servicio}${where}`;
   var requestOptions = {

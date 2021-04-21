@@ -76,7 +76,7 @@ export default function TareaABM() {
       }
       await tareaActualizar({ ...tareaLocal, id: valoresIniciales.id })
     } catch (error) {
-      console.log("ocurrio un error")
+      console.log(error.message)
     }
   }
 
