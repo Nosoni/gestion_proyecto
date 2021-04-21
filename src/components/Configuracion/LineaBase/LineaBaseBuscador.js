@@ -19,8 +19,8 @@ import {
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import Select from 'react-select';
 import { lineaBaseCrear } from '../../../api/lineaBase';
-import { lineaBaseTareaAsignar, lineaBaseTareaViewGet } from '../../../api/lineaBaseTarea';
-import { tareaGetAll } from '../../../api/tarea';
+import { lineaBaseTareaAsignar, lineaBaseTareaViewGet, lineaBaseTareaGetAllSelect } from '../../../api/lineaBaseTarea';
+import { tareaGetAll, tareaGetNOTIN } from '../../../api/tarea';
 
 export default function LineaBaseBuscador() {
   const [showError, setShowError] = useState(false)
@@ -67,8 +67,21 @@ export default function LineaBaseBuscador() {
   }
 
   const buscarTareasAsignar = async () => {
-    const respuesta = await tareaGetAll()
-    setTareasAsignar(respuesta)
+    try {
+      const tareasAsignadas = await lineaBaseTareaGetAllSelect("tarea_id")
+      if (tareasAsignadas.length > 0) {
+        var tareasId = tareasAsignadas.map(t => t.tarea_id);
+        const respuesta = await tareaGetNOTIN(tareasId.join())
+        setTareasAsignar(respuesta)
+        console.log(respuesta)
+      }
+      else {
+        const respuesta = await tareaGetAll()
+        setTareasAsignar(respuesta)
+      }
+    } catch (error) {
+      setError(error.message)
+    }
   }
 
   const actualizar = id => e => {
@@ -98,8 +111,8 @@ export default function LineaBaseBuscador() {
       buscarLineaBase()
       buscarTareasAsignar()
       setLineaBaseLocal({})
-    } catch (ec) {
-      setError(ec.message)
+    } catch (error) {
+      setError(error.message)
     }
   }
 

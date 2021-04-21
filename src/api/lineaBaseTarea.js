@@ -3,6 +3,18 @@ import { lineaBaseGetByLB } from "./lineaBase"
 const servicio = "linea_base_tarea";
 const servicioView = "linea_base_tarea_view";
 
+const lineaBaseTareaGetAllSelect = async (select) => {
+  var where = `?select=${select}&activo=is.true`
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+}
+
 const lineaBaseTareaGetByTareaId = async (tarea_id) => {
   var where = `?and=(activo.is.true,tarea_id.eq.${tarea_id})`
   const url = `${server}/${servicio}${where}`;
@@ -44,4 +56,4 @@ const lineaBaseTareaAsignar = async (lineaBaseTarea) => {
   return await fetch(url, requestOptions)
 }
 
-export { lineaBaseTareaViewGet, lineaBaseTareaAsignar, lineaBaseTareaGetByTareaId };
+export { lineaBaseTareaViewGet, lineaBaseTareaAsignar, lineaBaseTareaGetByTareaId, lineaBaseTareaGetAllSelect };

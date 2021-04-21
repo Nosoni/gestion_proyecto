@@ -83,5 +83,17 @@ const tareaDeleteById = async (id) => {
   return await fetch(url, requestOptions)
 };
 
+const tareaGetNOTIN = async (notIn) => {
+  var where = `?id=not.in.(${notIn})`
+  const url = `${server}/${servicio}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
 export { tareaGetAll, tareaGetByDescripcion, tareaCrear, 
-  tareaActualizar, tareaDeleteById, tareaGetById };
+  tareaActualizar, tareaDeleteById, tareaGetById, tareaGetNOTIN };
