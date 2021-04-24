@@ -14,15 +14,14 @@ const proyectoTareaViewGetByProyecto = async (proyecto_id) => {
     .then(response => response.json())
 };
 
-
-const proyectoTareaAsignar = async (usuarioRol) => {
+const proyectoTareaAsignar = async (proyectoTarea) => {
   const url = `${server}/${servicio}`;
   var requestOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ ...usuarioRol, activo: true })
+    body: JSON.stringify({ ...proyectoTarea, activo: true })
   };
 
   return await fetch(url, requestOptions)

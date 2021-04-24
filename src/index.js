@@ -33,6 +33,7 @@ import NotFound from "./views/paginas/NotFound.js";
 import Administracion from "./views/paginas/Administracion.js";
 import { SesionContext } from "./context.js"
 import Desarrollo from "views/paginas/Desarrollo.js";
+import Configuracion from "views/paginas/Configuracion.js";
 
 ReactDOM.render(
   <SesionContext>
@@ -66,6 +67,10 @@ ReactDOM.render(
         <Route
           path="/desarrollo"
           render={(props) => <Desarrollo {...props} />}
+        />
+        <Route
+          path="/configuracion"
+          render={(props) => <Configuracion {...props} />}
         />
         <Route
           path="/404"

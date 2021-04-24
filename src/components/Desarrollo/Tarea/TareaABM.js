@@ -28,10 +28,10 @@ export default function TareaABM() {
   }
 
   const buscarTareaPadre = async () => {
-    console.log(valoresIniciales.id_tarea_padre)
-    const respuesta = await tareaGetById(valoresIniciales.id_tarea_padre)
-    console.log(respuesta)
-    setTareaPadre(respuesta)
+    if (valoresIniciales.id_tarea_padre) {
+      const respuesta = await tareaGetById(valoresIniciales.id_tarea_padre)
+      setTareaPadre(respuesta)
+    }
   }
 
   useEffect(() => {
@@ -58,9 +58,9 @@ export default function TareaABM() {
       if (!tareaLocal.estado || tareaLocal.estado.length === 0) {
         throw new Error("sin datos");
       }
-      await tareaCrear(tareaLocal)
-      const actualizado = await tareaGetByDescripcion(tareaLocal.descripcion)
-      actualizarSelecion(actualizado[0])
+      const cre = await tareaCrear(tareaLocal)
+      const creado = await tareaGetByDescripcion(tareaLocal.descripcion)
+      actualizarSelecion(creado[0])
       setTareaLocal({})
     } catch (error) {
       console.log("ocurrio un error")
@@ -77,7 +77,7 @@ export default function TareaABM() {
       }
       await tareaActualizar({ ...tareaLocal, id: valoresIniciales.id })
     } catch (error) {
-      console.log("ocurrio un error")
+      console.log(error.message)
     }
   }
 
