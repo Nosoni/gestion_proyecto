@@ -58,7 +58,7 @@ export default function TareaABM() {
       if (!tareaLocal.estado || tareaLocal.estado.length === 0) {
         throw new Error("sin datos");
       }
-      const cre = await tareaCrear(tareaLocal)
+      await tareaCrear(tareaLocal)
       const creado = await tareaGetByDescripcion(tareaLocal.descripcion)
       actualizarSelecion(creado[0])
       setTareaLocal({})

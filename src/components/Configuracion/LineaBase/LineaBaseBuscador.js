@@ -7,14 +7,12 @@ import {
   GroupingState,
   IntegratedGrouping,
   PagingState,
-  IntegratedPaging,
 } from '@devexpress/dx-react-grid';
 import {
   Grid,
   Table,
   TableHeaderRow,
   TableGroupRow,
-  PagingPanel
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import Select from 'react-select';
@@ -73,9 +71,7 @@ export default function LineaBaseBuscador() {
         var tareasId = tareasAsignadas.map(t => t.tarea_id);
         const respuesta = await tareaGetNOTIN(tareasId.join())
         setTareasAsignar(respuesta)
-        console.log(respuesta)
-      }
-      else {
+      } else {
         const respuesta = await tareaGetAll()
         setTareasAsignar(respuesta)
       }
@@ -105,7 +101,6 @@ export default function LineaBaseBuscador() {
       }
       var lineaBase = { ...lineaBaseLocal }
       delete lineaBase.tareas
-      console.log(lineaBase)
       await lineaBaseCrear(lineaBase)
       await lineaBaseTareaAsignar(lineaBaseLocal)
       buscarLineaBase()
@@ -187,7 +182,6 @@ export default function LineaBaseBuscador() {
             </Row>
             <CardBody>
               <Row className="align-items-center">
-
                 <TableStrap className="table">
                   <thead className="text-primary">
                     <tr>
