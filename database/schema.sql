@@ -99,7 +99,7 @@ AS SELECT pt.id AS proyecto_tarea_id,
 	t.estado as tarea_estado,
     pt.activo AS proyecto_tarea_activo
    FROM proyecto_tarea pt
-     JOIN tarea t ON pt.tarea_id = t.id
+     JOIN tarea t ON pt.tarea_id = t.id;
 
 CREATE OR REPLACE VIEW public.linea_base_tarea_view
 AS SELECT lb.id AS linea_base_id,
