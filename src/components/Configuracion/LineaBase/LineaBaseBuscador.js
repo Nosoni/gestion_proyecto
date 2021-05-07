@@ -96,6 +96,9 @@ export default function LineaBaseBuscador() {
       if (!lineaBaseLocal.nombre || lineaBaseLocal.nombre.length === 0) {
         throw new Error("Ingresar nombre de LB");
       }
+      if (!lineaBaseLocal.estado || lineaBaseLocal.estado.length === 0) {
+        throw new Error("Favor seleccionar estado");
+      }
       if (!lineaBaseLocal.tareas || lineaBaseLocal.tareas.length === 0) {
         throw new Error("Favor seleccionar tareas");
       }
