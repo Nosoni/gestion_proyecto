@@ -35,6 +35,13 @@ export default function LineaBaseBuscador() {
     { name: 'tarea_estado', title: 'T. estado' },
   ]);
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
   useEffect(() => {
     if (estadosOpciones.length === 0)
       cargarEstados()
@@ -180,6 +187,7 @@ export default function LineaBaseBuscador() {
                   onChange={(seleccion) => setLineaBaseLocal({ ...lineaBaseLocal, estado: seleccion.value })}
                   options={estadosOpciones}
                   name="estado"
+                  styles={customStyles}
                 />
               </Col>
             </Row>

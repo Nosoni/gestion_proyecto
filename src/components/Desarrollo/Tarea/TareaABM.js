@@ -20,6 +20,13 @@ export default function TareaABM() {
   const [alerta, setAlerta] = useState({ mensaje: "", type: "" })
   const [showModal, setShowModal] = useState(false);
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
   useEffect(() => {
     alerta.mensaje.length > 0 ? setShowAlerta(true) : setShowAlerta(false)
   }, [alerta])
@@ -181,6 +188,7 @@ export default function TareaABM() {
                         onChange={(seleccion) => setTareaLocal({ ...tareaLocal, estado: seleccion.value })}
                         options={estadosOpciones}
                         name="estado"
+                        styles={customStyles}
                       />
                     </FormGroup>
                   </Col>

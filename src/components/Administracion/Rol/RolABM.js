@@ -21,6 +21,13 @@ export default function RolABM() {
   const [alerta, setAlerta] = useState({ mensaje: "", type: "" })
   const [showModal, setShowModal] = useState(false);
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
   useEffect(() => {
     alerta.mensaje.length > 0 ? setShowAlerta(true) : setShowAlerta(false)
   }, [alerta])
@@ -192,6 +199,7 @@ export default function RolABM() {
                     options={selectOpciones}
                     onChange={(seleccion) => setPermisoAsignar(seleccion.value)}
                     name="permiso"
+                    styles={customStyles}
                   />
                 </Col>
                 <Col lg="4" xl="4">

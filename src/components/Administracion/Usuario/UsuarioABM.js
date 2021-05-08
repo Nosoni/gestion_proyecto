@@ -21,6 +21,13 @@ export default function UsuarioABM() {
   const [alerta, setAlerta] = useState({ mensaje: "", type: "" })
   const [showModal, setShowModal] = useState(false);
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
   useEffect(() => {
     alerta.mensaje.length > 0 ? setShowAlerta(true) : setShowAlerta(false)
   }, [alerta])
@@ -206,6 +213,7 @@ export default function UsuarioABM() {
                   options={selectOpciones}
                   onChange={(seleccion) => setRolAsignar(seleccion.value)}
                   name="rol"
+                  styles={customStyles}
                 />
               </Col>
               <Col lg="3" xl="3">
