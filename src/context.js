@@ -14,10 +14,6 @@ export function SesionContext({ children }) {
 function useProvideSesion() {
   const [valoresSesion, setValoresSesion] = useState(null);
 
-  useEffect(() => {
-    valoresSesion != null ? console.log(valoresSesion) : console.log("")
-  }, [valoresSesion])
-
   const actualizarValores = (accion) => {
     switch (accion.type) {
       case "usuario":

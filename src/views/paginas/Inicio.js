@@ -5,6 +5,7 @@ import BarraNavegacion from "../../components/Navbars/BarraNavegacion"
 import { permisos as PERMISOSCONST } from '../../constantes/constantes'
 
 export default function Inicio(props) {
+  //variable global
   let sesion = useSesion();
   const permisosTiene = sesion.valoresSesion.permisos
 
@@ -24,103 +25,94 @@ export default function Inicio(props) {
           <div className="header bg-gradient-info pb-8 pt-md">
             <Container fluid>
               <div className="header-body">
-                <Row>
-                  {
-                    permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_ADMINISTRACION) ?
-                      <Col lg="4" xl="4">
-                        <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/administracion")}>
-                          <CardBody>
-                            <Row>
-                              <div className="col">
-                                <span className="h2 font-weight-bold mb-0">
-                                  Administración
+                {
+                  permisosTiene ?
+                    <Row>
+                      {
+                        permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_ADMINISTRACION) ?
+                          <Col lg="4" xl="4">
+                            <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/administracion")}>
+                              <CardBody>
+                                <Row>
+                                  <div className="col">
+                                    <span className="h2 font-weight-bold mb-0">
+                                      Administración
                             </span>
-                              </div>
-                              <Col className="col-auto">
-                                <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                  <i className="fas fa-tasks"></i>
-                                </div>
-                              </Col>
-                            </Row>
-                            <p className="mt-3 mb-0 text-muted text-sm">
-                              <span className="text-nowrap">Módulo que permite la administración de</span>
-                              <span className="text-nowrap">usuarios y roles</span>
-                            </p>
-                          </CardBody>
-                        </Card>
-                      </Col> :
-                      null
-                  }
-                  {
-                    permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_CONFIGURACION) ?
-                      <Col lg="4" xl="4">
-                        <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/configuracion")}>
-                          <CardBody>
-                            <Row>
-                              <div className="col">
-                                <span className="h2 font-weight-bold mb-0">
-                                  Configuración
+                                  </div>
+                                  <Col className="col-auto">
+                                    <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                      <i className="fas fa-tasks"></i>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <p className="mt-3 mb-0 text-muted text-sm">
+                                  <span className="text-nowrap">Módulo que permite la administración de</span>
+                                  <span className="text-nowrap">usuarios y roles</span>
+                                </p>
+                              </CardBody>
+                            </Card>
+                          </Col> :
+                          null
+                      }
+                      {
+                        permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_CONFIGURACION) ?
+                          <Col lg="4" xl="4">
+                            <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/configuracion")}>
+                              <CardBody>
+                                <Row>
+                                  <div className="col">
+                                    <span className="h2 font-weight-bold mb-0">
+                                      Configuración
                             </span>
-                              </div>
-                              <Col className="col-auto">
-                                <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                  <i className="fas fa-user-cog" />
-                                </div>
-                              </Col>
-                            </Row>
-                            <p className="mt-3 mb-0 text-muted text-sm">
-                              <span className="text-nowrap"> Módulo que permite la generación de líneas</span>
-                              <span className="text-nowrap"> bases</span>
-                            </p>
-                          </CardBody>
-                        </Card>
-                      </Col> :
-                      null
-                  }
-                  {
-                    permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_DESARROLLO) ?
-                      <Col lg="4" xl="4">
-                        <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/desarrollo")}>
-                          <CardBody>
-                            <Row>
-                              <div className="col">
-                                <span className="h2 font-weight-bold mb-0">
-                                  Desarrollo
+                                  </div>
+                                  <Col className="col-auto">
+                                    <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                      <i className="fas fa-user-cog" />
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <p className="mt-3 mb-0 text-muted text-sm">
+                                  <span className="text-nowrap"> Módulo que permite la generación de líneas</span>
+                                  <span className="text-nowrap"> bases</span>
+                                </p>
+                              </CardBody>
+                            </Card>
+                          </Col> :
+                          null
+                      }
+                      {
+                        permisosTiene.find(permiso => permiso === PERMISOSCONST.VER_MENU_DESARROLLO) ?
+                          <Col lg="4" xl="4">
+                            <Card className="card-stats pointer mb-4 mb-xl-0 bg-white" onClick={() => props.history.push("/desarrollo")}>
+                              <CardBody>
+                                <Row>
+                                  <div className="col">
+                                    <span className="h2 font-weight-bold mb-0">
+                                      Desarrollo
                             </span>
-                                <span></span>
-                              </div>
-                              <Col className="col-auto">
-                                <div className="icon icon-shape bg-dark text-white rounded-circle shadow">
-                                  <i className="fas fa-terminal"></i>
-                                </div>
-                              </Col>
-                            </Row>
-                            <p className="mt-3 mb-0 text-muted text-sm">
-                              <span className="text-nowrap">Módulo que administra todos los elementos</span>
-                              <span className="text-nowrap">de los productos</span>
-                            </p>
-                          </CardBody>
-                        </Card>
-                      </Col> :
-                      null
-                  }
-                </Row>
+                                    <span></span>
+                                  </div>
+                                  <Col className="col-auto">
+                                    <div className="icon icon-shape bg-dark text-white rounded-circle shadow">
+                                      <i className="fas fa-terminal"></i>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <p className="mt-3 mb-0 text-muted text-sm">
+                                  <span className="text-nowrap">Módulo que administra todos los elementos</span>
+                                  <span className="text-nowrap">de los productos</span>
+                                </p>
+                              </CardBody>
+                            </Card>
+                          </Col> :
+                          null
+                      }
+                    </Row> :
+                    null
+                }
               </div>
             </Container>
           </div>
-          <div className="squares square3" />
-          <div className="squares square4" />
-          <div className="squares square5" />
-          <div className="squares square6" />
-          <div className="squares square7" />
-          <Container className="mt--7" fluid>
-            <div className="content-center brand">
-              <h1 className="h1-seo">BIENVENIDO</h1>
-              <h3 className="d-none d-sm-block">
-                Esta es la pantalla de inicio
-              </h3>
-            </div>
-          </Container>
         </div>
       </div>
     </>

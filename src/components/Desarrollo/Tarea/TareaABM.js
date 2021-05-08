@@ -42,9 +42,9 @@ export default function TareaABM() {
     { value: "pendiente", label: "Pendiente" }])
   }
 
-  const buscarTareaPadre = async () => {
-    if (valoresIniciales.id_tarea_padre) {
-      const respuesta = await tareaGetById(valoresIniciales.id_tarea_padre)
+  const buscarTareaPadre = async (id_tarea_padre) => {
+    if (id_tarea_padre) {
+      const respuesta = await tareaGetById(id_tarea_padre)
       setTareaPadre(respuesta)
     }
   }
@@ -57,7 +57,7 @@ export default function TareaABM() {
     buscarTareas()
     cargarEstados()
     if (valoresIniciales.id) {
-      buscarTareaPadre()
+      buscarTareaPadre(valoresIniciales.id_tarea_padre)
       setTareaLocal(valoresIniciales)
     }
   }, [valoresIniciales])
@@ -130,8 +130,8 @@ export default function TareaABM() {
         throw Error("Favor asignar una tarea padre")
       }
       await tareaActualizar({ id: valoresIniciales.id, id_tarea_padre: tareaAsignar })
-      buscarTareaPadre();
       setAlerta({ mensaje: "Asignado con éxito", type: "success" })
+      buscarTareaPadre(tareaAsignar);
     } catch (error) {
       setAlerta({ mensaje: error.message, type: "danger" })
     }
@@ -145,7 +145,7 @@ export default function TareaABM() {
     try {
       await tareaActualizar({ id, id_tarea_padre: null })
       setAlerta({ mensaje: "Proyecto eliminado con éxito", type: "info" })
-      buscarTareaPadre();
+      buscarTareaPadre(null);
     } catch (error) {
       setAlerta({ mensaje: error.message, type: "danger" })
     }
@@ -154,7 +154,7 @@ export default function TareaABM() {
   return (
     <div className="main">
       <div className="container-sm">
-        <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({})}>
+        <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({ mensaje: "", type: "" })}>
           <span>
             {alerta.mensaje}
           </span>
@@ -227,6 +227,7 @@ export default function TareaABM() {
                     options={selectOpciones}
                     onChange={(seleccion) => setTareaAsignar(seleccion.value)}
                     name="tarea"
+                    styles={customStyles}
                   />
                 </Col>
                 <Col lg="4" xl="4">

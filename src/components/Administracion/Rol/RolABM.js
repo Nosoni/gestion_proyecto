@@ -140,7 +140,7 @@ export default function RolABM() {
   return (
     <div className="main">
       <div className="container-sm">
-        <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({})}>
+        <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({ mensaje: "", type: "" })}>
           <span>
             {alerta.mensaje}
           </span>
