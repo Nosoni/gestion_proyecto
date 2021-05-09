@@ -91,7 +91,7 @@ export default function TareaABM() {
       if (!tareaLocal.estado || tareaLocal.estado.length === 0) {
         throw new Error("Ingresar estado");
       }
-      await tareaActualizar({ ...tareaLocal, id: valoresIniciales.id })
+      await tareaActualizar({ ...tareaLocal, id: valoresIniciales.id, version: valoresIniciales.version + 1 })
       setAlerta({ mensaje: "Actualizado con éxito", type: "info" })
     } catch (error) {
       setAlerta({ mensaje: error.message, type: "danger" })
