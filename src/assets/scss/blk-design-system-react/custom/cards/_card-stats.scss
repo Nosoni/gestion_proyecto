@@ -7,6 +7,7 @@
 
 .card-stats {
   margin-bottom: 5px;
+  margin-top: 5px;
   height: 130px;
   &.pointer{
     cursor: pointer;
@@ -19,7 +20,6 @@
     z-index: 2;
     min-width: 260px;
   }
-
     .card-body {
         .numbers {
           text-align: right;
@@ -50,13 +50,68 @@
     .icon-big {
         font-size: 3em;
         min-height: 64px;
-
         i{
             line-height: 59px;
         }
     }
+}
 
+.card-stats-table {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  height: 300px;
+  &.pointer{
+    cursor: pointer;
+  }
+  &.upper {
+    box-shadow: 2px 7px 11px rgba(0, 0, 0, 0.4);
+    transform: translate(-20px, -25px);
+    position: absolute;
+    padding: 10px;
+    z-index: 2;
+    min-width: 260px;
+  }
+  .card-body {
+    .chart-area {
+      padding-top: 30px;
+      width: 100%;
+      height: 100%;
+    }
 
+    .numbers {
+      text-align: right;
+      font-size: 2em;
+
+        p{
+            margin-bottom: 0;
+        }
+        .card-category {
+          color: $dark-gray;
+          font-size: 16px;
+          line-height: 1.4em;
+        }
+    }
+  }
+  .card-footer{
+      padding: 0px 15px 15px;
+
+      .stats{
+        color: $dark-gray;
+      }
+
+      hr{
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
+  }
+  .icon-big {
+      font-size: 3em;
+      min-height: 64px;
+
+      i{
+          line-height: 59px;
+      }
+  }
 }
 
 @media screen and (max-width: 991px){

@@ -76,6 +76,7 @@ export default function TareaBuscador() {
                   <tr>
                     <th className="header">Tarea</th>
                     <th className="header">Estado</th>
+                    <th className="header">Version</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -84,10 +85,12 @@ export default function TareaBuscador() {
                       resultado.map(dato => <tr key={dato.id}>
                         <td> {dato.descripcion} </td>
                         <td> {dato.estado} </td>
+                        <td> {dato.version} </td>
                         <td> <Button size="sm" onClick={editar(dato.id)}>Editar</Button> </td>
                       </tr>) :
                       <tr>
                         <td> Sin datos... </td>
+                        <td />
                         <td />
                         <td />
                       </tr>

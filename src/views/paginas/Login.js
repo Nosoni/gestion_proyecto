@@ -24,24 +24,24 @@ export default function Login(props) {
    * Se actualiza variable de sesión */
   const login = async () => {
     // TODO, validar proyecto
-
-    // if (!usuario.usuario || usuario.usuario.length === 0) {
-    //   setError("Ingrese usuario")
-    //   return;
-    // }
-    // if (!usuario.password || usuario.usuario.password === 0) {
-    //   setError("Ingrese contraseña")
-    //   return;
-    // }
-    const response = await usuarioGetByUsuarioPass({ usuario: "frecalde", password: "frecalde" });
+    if (!usuario.usuario || usuario.usuario.length === 0) {
+      setError("Ingrese usuario")
+      return;
+    }
+    if (!usuario.password || usuario.usuario.password === 0) {
+      setError("Ingrese contraseña")
+      return;
+    }
+    const response = await usuarioGetByUsuarioPass(usuario);
     if (response.length > 0) {
-      const usuarioRol = await usuarioRolGetByUsuario(response[0].id)
-      const permisos = await rolPermisoViewGetByRol(usuarioRol[0].rol_id).then(respuesta => {
-        return respuesta.map(registro => registro.permiso_nombre)
-      })
-
       sesion.actualizarValores({ type: "usuario", payload: response[0].usuario })
-      sesion.actualizarValores({ type: "permisos", payload: permisos })
+      const usuarioRol = await usuarioRolGetByUsuario(response[0].id)
+      if (usuarioRol.length > 0) {
+        const permisos = await rolPermisoViewGetByRol(usuarioRol[0].rol_id).then(respuesta => {
+          return respuesta.map(registro => registro.permiso_nombre)
+        })
+        sesion.actualizarValores({ type: "permisos", payload: permisos })
+      }
       props.history.push("/inicio")
     }
     else {

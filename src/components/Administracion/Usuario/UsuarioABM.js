@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
   Row, Col, Card, CardHeader, CardBody, Form, FormGroup, Input, Button,
-  Table
+  Table, Alert
 } from 'reactstrap'
 import { Accion, UsuarioEstado } from './Usuario';
 import { usuarioCrear, usuarioDeleteById, usuarioActualizar, usuarioGetByUsuario } from '../../../api/usuario'
 import Select from 'react-select';
 import { rolGetAll } from '../../../api/rol';
 import { usuarioRolAsignar, usuarioRolDeshabilitar, usuarioRolViewGetByUsuario } from '../../../api/usuarioRol';
+import ModalIS from '../../../components/Modal';
 
 export default function UsuarioABM() {
   const { state, dispatch } = useContext(UsuarioEstado);
@@ -16,6 +17,20 @@ export default function UsuarioABM() {
   const [selectOpciones, setSelectOpciones] = useState([])
   const [rolAsignar, setRolAsignar] = useState()
   const [rolesDelUsuario, setRolesDelUsuario] = useState([])
+  const [showAlerta, setShowAlerta] = useState(false)
+  const [alerta, setAlerta] = useState({ mensaje: "", type: "" })
+  const [showModal, setShowModal] = useState(false);
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
+  useEffect(() => {
+    alerta.mensaje.length > 0 ? setShowAlerta(true) : setShowAlerta(false)
+  }, [alerta])
 
   const buscarRoles = async () => {
     const respuesta = await rolGetAll()
@@ -45,43 +60,55 @@ export default function UsuarioABM() {
   const crearUsuario = async () => {
     try {
       if (!usuarioLocal.usuario || usuarioLocal.usuario.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar usuario");
       }
       if (!usuarioLocal.password || usuarioLocal.usuario.password === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar contraseña");
       }
       await usuarioCrear(usuarioLocal)
+      setAlerta({ mensaje: "Creado con éxito", type: "success" })
       const actualizado = await usuarioGetByUsuario(usuarioLocal.usuario)
       actualizarSelecion(actualizado[0])
       setUsuarioLocal({})
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
   const editarUsuario = async () => {
     try {
       if (!usuarioLocal.usuario || usuarioLocal.usuario.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar usuario");
       }
       if (!usuarioLocal.password || usuarioLocal.usuario.password === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar contraseña");
       }
       await usuarioActualizar({ ...usuarioLocal, id: valoresIniciales.id })
+      setAlerta({ mensaje: "Actualizado con éxito", type: "info" })
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
+  }
+
+  const seleccionarUsuarioEliminar = () => {
+    setShowModal(true)
   }
 
   const eliminarUsuario = async () => {
     try {
       await usuarioDeleteById(valoresIniciales.id)
+      setShowModal(false)
       actualizarSelecion({})
       setUsuarioLocal({})
       setRolesDelUsuario({})
+      mostrarBuscador()
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
+  }
+
+  const ocultarModal = () => {
+    setShowModal(false)
   }
 
   const cancelar = () => {
@@ -91,10 +118,14 @@ export default function UsuarioABM() {
 
   const asignarRol = async () => {
     try {
+      if (!rolAsignar) {
+        throw Error("Favor asignar un rol")
+      }
       await usuarioRolAsignar({ usuario_id: valoresIniciales.id, rol_id: rolAsignar })
       buscarRolUsuario();
+      setAlerta({ mensaje: "Asignado con éxito", type: "success" })
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
@@ -105,13 +136,21 @@ export default function UsuarioABM() {
   const deshabilitar = async (id) => {
     try {
       await usuarioRolDeshabilitar(id)
+      setAlerta({ mensaje: "Rol eliminado con éxito", type: "info" })
       buscarRolUsuario();
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
-  return (<div>
+  return (<div className="main">
+    <div className="container-sm">
+      <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({ mensaje: "", type: "" })}>
+        <span>
+          {alerta.mensaje}
+        </span>
+      </Alert>
+    </div>
     <Row className="justify-content-center">
       <Col lg="6" xl="6">
         <Card className="card-user">
@@ -133,7 +172,8 @@ export default function UsuarioABM() {
                 <Col md="6">
                   <FormGroup>
                     <label >Contraseña</label>
-                    <Input placeholder="Ingrese contraseña"
+                    <Input defaultValue={valoresIniciales.password}
+                      placeholder="Ingrese contraseña"
                       type="password"
                       onChange={(evento) => { setUsuarioLocal({ ...usuarioLocal, password: evento.target.value }) }} />
                   </FormGroup>
@@ -144,7 +184,7 @@ export default function UsuarioABM() {
                   valoresIniciales.id ?
                     <>
                       <Button size="sm" onClick={() => editarUsuario()}> Editar </Button>
-                      <Button className="btn-danger" size="sm" onClick={() => eliminarUsuario()}> Eliminar </Button>
+                      <Button className="btn-danger" size="sm" onClick={() => seleccionarUsuarioEliminar()}> Eliminar </Button>
                     </> :
                     <Button size="sm" onClick={() => crearUsuario()}> Crear </Button>
                 }
@@ -173,10 +213,11 @@ export default function UsuarioABM() {
                   options={selectOpciones}
                   onChange={(seleccion) => setRolAsignar(seleccion.value)}
                   name="rol"
+                  styles={customStyles}
                 />
               </Col>
               <Col lg="3" xl="3">
-                <Button size="sm" onClick={asignarRol}>Asignar Rol</Button>
+                <Button size="sm" disabled={!valoresIniciales.id} onClick={asignarRol}>Asignar Rol</Button>
               </Col>
             </Row>
             <Row>
@@ -211,5 +252,11 @@ export default function UsuarioABM() {
         </Card>
       </Col>
     </Row>
+    <ModalIS
+      mostrar={showModal}
+      eventoAceptar={eliminarUsuario}
+      eventoCancelar={ocultarModal}
+      titulo="Atención"
+      cuerpo="¿Desea eliminar?" />
   </div>)
 }

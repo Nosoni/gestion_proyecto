@@ -93,13 +93,14 @@ AS SELECT ur.id AS usuario_rol_id,
 
 CREATE OR REPLACE VIEW public.proyecto_tarea_view
 AS SELECT pt.id AS proyecto_tarea_id,
-    pt.proyecto_id,
-    pt.tarea_id,
-    t.descripcion as tarea_descripcion,
-	t.estado as tarea_estado,
-    pt.activo AS proyecto_tarea_activo
+    p.id AS proyecto_id,
+    t.id AS tarea_id,
+    t.descripcion AS tarea_descripcion,
+    t.estado AS tarea_estado
    FROM proyecto_tarea pt
+     JOIN proyecto p ON pt.proyecto_id = p.id
      JOIN tarea t ON pt.tarea_id = t.id
+  WHERE p.activo IS TRUE AND pt.activo IS TRUE AND t.activo IS TRUE;
 
 CREATE OR REPLACE VIEW public.linea_base_tarea_view
 AS SELECT lb.id AS linea_base_id,

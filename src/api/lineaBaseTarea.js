@@ -2,6 +2,7 @@ import { server } from "../constantes/constantes"
 import { lineaBaseGetByLB } from "./lineaBase"
 const servicio = "linea_base_tarea";
 const servicioView = "linea_base_tarea_view";
+const servicioCantidadView = "linea_base_tareas_cantidad_view";
 
 const lineaBaseTareaGetAllSelect = async (select) => {
   var where = `?select=${select}&activo=is.true`
@@ -56,4 +57,18 @@ const lineaBaseTareaAsignar = async (lineaBaseTarea) => {
   return await fetch(url, requestOptions)
 }
 
-export { lineaBaseTareaViewGet, lineaBaseTareaAsignar, lineaBaseTareaGetByTareaId, lineaBaseTareaGetAllSelect };
+const lineaBaseTareaCantidadViewGetAll = async () => {
+  const url = `${server}/${servicioCantidadView}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+export {
+  lineaBaseTareaViewGet, lineaBaseTareaAsignar, lineaBaseTareaGetByTareaId,
+  lineaBaseTareaGetAllSelect, lineaBaseTareaCantidadViewGetAll
+};

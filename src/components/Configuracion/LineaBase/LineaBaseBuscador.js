@@ -7,14 +7,12 @@ import {
   GroupingState,
   IntegratedGrouping,
   PagingState,
-  IntegratedPaging,
 } from '@devexpress/dx-react-grid';
 import {
   Grid,
   Table,
   TableHeaderRow,
   TableGroupRow,
-  PagingPanel
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import Select from 'react-select';
@@ -37,6 +35,13 @@ export default function LineaBaseBuscador() {
     { name: 'tarea_estado', title: 'T. estado' },
   ]);
 
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
   useEffect(() => {
     if (estadosOpciones.length === 0)
       cargarEstados()
@@ -57,8 +62,9 @@ export default function LineaBaseBuscador() {
   }, [tareasAsignar])
 
   const cargarEstados = async () => {
-    setEstadosOpciones([{ value: "iniciado", label: "Iniciado" },
-    { value: "pendiente", label: "Pendiente" }])
+    setEstadosOpciones([{ value: "pendiente", label: "Pendiente" },
+    { value: "iniciado", label: "Iniciado" },
+    { value: "concluido", label: "Concluido" }])
   }
 
   const buscarLineaBase = async () => {
@@ -73,9 +79,7 @@ export default function LineaBaseBuscador() {
         var tareasId = tareasAsignadas.map(t => t.tarea_id);
         const respuesta = await tareaGetNOTIN(tareasId.join())
         setTareasAsignar(respuesta)
-        console.log(respuesta)
-      }
-      else {
+      } else {
         const respuesta = await tareaGetAll()
         setTareasAsignar(respuesta)
       }
@@ -100,12 +104,14 @@ export default function LineaBaseBuscador() {
       if (!lineaBaseLocal.nombre || lineaBaseLocal.nombre.length === 0) {
         throw new Error("Ingresar nombre de LB");
       }
+      if (!lineaBaseLocal.estado || lineaBaseLocal.estado.length === 0) {
+        throw new Error("Favor seleccionar estado");
+      }
       if (!lineaBaseLocal.tareas || lineaBaseLocal.tareas.length === 0) {
         throw new Error("Favor seleccionar tareas");
       }
       var lineaBase = { ...lineaBaseLocal }
       delete lineaBase.tareas
-      console.log(lineaBase)
       await lineaBaseCrear(lineaBase)
       await lineaBaseTareaAsignar(lineaBaseLocal)
       buscarLineaBase()
@@ -182,12 +188,12 @@ export default function LineaBaseBuscador() {
                   onChange={(seleccion) => setLineaBaseLocal({ ...lineaBaseLocal, estado: seleccion.value })}
                   options={estadosOpciones}
                   name="estado"
+                  styles={customStyles}
                 />
               </Col>
             </Row>
             <CardBody>
               <Row className="align-items-center">
-
                 <TableStrap className="table">
                   <thead className="text-primary">
                     <tr>

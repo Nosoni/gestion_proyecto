@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
   Row, Col, Card, CardHeader, CardBody, Form, FormGroup, Input, Button,
-  Table
+  Table, Alert
 } from 'reactstrap'
 import { Accion, RolEstado } from './Rol';
 import { rolCrear, rolDeleteById, rolActualizar, rolGetByRol } from '../../../api/rol'
 import Select from 'react-select';
 import { permisoGetAll } from '../../../api/permiso';
 import { rolPermisoAsignar, rolPermisoDeshabilitar, rolPermisoViewGetByRol } from '../../../api/rolPermiso';
+import ModalIS from '../../../components/Modal';
 
 export default function RolABM() {
   const { state, dispatch } = useContext(RolEstado);
@@ -16,6 +17,20 @@ export default function RolABM() {
   const [selectOpciones, setSelectOpciones] = useState([])
   const [permisoAsignar, setPermisoAsignar] = useState()
   const [permisosDelRol, setPermisosDelRol] = useState([])
+  const [showAlerta, setShowAlerta] = useState(false)
+  const [alerta, setAlerta] = useState({ mensaje: "", type: "" })
+  const [showModal, setShowModal] = useState(false);
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
+  useEffect(() => {
+    alerta.mensaje.length > 0 ? setShowAlerta(true) : setShowAlerta(false)
+  }, [alerta])
 
   const buscarPermisos = async () => {
     const respuesta = await permisoGetAll()
@@ -45,37 +60,49 @@ export default function RolABM() {
   const crearRol = async () => {
     try {
       if (!rolLocal.nombre || rolLocal.nombre.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar nombre");
       }
       await rolCrear(rolLocal)
+      setAlerta({ mensaje: "Creado con éxito", type: "success" })
       const actualizado = await rolGetByRol(rolLocal.nombre)
       actualizarSelecion(actualizado[0])
       setRolLocal({})
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
   const editarRol = async () => {
     try {
       if (!rolLocal.nombre || rolLocal.nombre.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar nombre");
       }
       await rolActualizar({ ...rolLocal, id: valoresIniciales.id })
+      setAlerta({ mensaje: "Actualizado con éxito", type: "info" })
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
+  }
+
+  const seleccionarRolEliminar = () => {
+    setShowModal(true)
   }
 
   const eliminarRol = async () => {
     try {
       await rolDeleteById(valoresIniciales.id)
-      actualizarSelecion({})
+      setShowModal(false)
       setRolLocal({})
       setPermisosDelRol([])
+      actualizarSelecion({})
+      mostrarBuscador()
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
+  }
+
+  const ocultarModal = () => {
+    setShowModal(false)
   }
 
   const cancelar = () => {
@@ -85,10 +112,14 @@ export default function RolABM() {
 
   const asignarPermiso = async () => {
     try {
+      if (!permisoAsignar) {
+        throw Error("Favor asignar un permiso")
+      }
       await rolPermisoAsignar({ rol_id: valoresIniciales.id, permiso_id: permisoAsignar })
       buscarPermisoRol();
+      setAlerta({ mensaje: "Asignado con éxito", type: "success" })
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
@@ -99,14 +130,22 @@ export default function RolABM() {
   const deshabilitar = async (id) => {
     try {
       await rolPermisoDeshabilitar(id)
+      setAlerta({ mensaje: "Permiso eliminado con éxito", type: "info" })
       buscarPermisoRol();
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
   return (
-    <div>
+    <div className="main">
+      <div className="container-sm">
+        <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({ mensaje: "", type: "" })}>
+          <span>
+            {alerta.mensaje}
+          </span>
+        </Alert>
+      </div>
       <Row className="justify-content-center">
         <Col lg="6" xl="6">
           <Card className="card-user">
@@ -131,7 +170,7 @@ export default function RolABM() {
                     valoresIniciales.id ?
                       <>
                         <Button size="sm" onClick={() => editarRol()}> Editar </Button>
-                        <Button className="btn-danger" size="sm" onClick={() => eliminarRol()}> Eliminar </Button>
+                        <Button className="btn-danger" size="sm" onClick={() => seleccionarRolEliminar()}> Eliminar </Button>
                       </> :
                       <Button size="sm" onClick={() => crearRol()}> Crear </Button>
                   }
@@ -160,10 +199,11 @@ export default function RolABM() {
                     options={selectOpciones}
                     onChange={(seleccion) => setPermisoAsignar(seleccion.value)}
                     name="permiso"
+                    styles={customStyles}
                   />
                 </Col>
                 <Col lg="4" xl="4">
-                  <Button size="sm" onClick={asignarPermiso}>Asignar Permiso</Button>
+                  <Button disabled={!valoresIniciales.id} size="sm" onClick={asignarPermiso}>Asignar Permiso</Button>
                 </Col>
               </Row>
               <Row>
@@ -199,6 +239,12 @@ export default function RolABM() {
           </Card>
         </Col>
       </Row>
+      <ModalIS
+        mostrar={showModal}
+        eventoAceptar={eliminarRol}
+        eventoCancelar={ocultarModal}
+        titulo="Atención"
+        cuerpo="¿Desea eliminar?" />
     </div>
   )
 }

@@ -1,7 +1,8 @@
 // style for the landing page
 .index-page {
+  overflow-y: scroll;
+
     .page-header {
-        height: 100vh;
 
         .container{
             > .content-center {
@@ -100,6 +101,11 @@
       }
     }
 }
+
+.index-page::-webkit-scrollbar{
+  width: 7px;
+}
+
 .landing-page {
   overflow-x: hidden;
 

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
   Row, Col, Card, CardHeader, CardBody, Form, FormGroup, Input, Button,
-  Table
+  Table, Alert
 } from 'reactstrap'
 import { Accion, TareaEstado } from './Tarea';
 import { tareaGetAll, tareaGetByDescripcion, tareaCrear, tareaActualizar, tareaDeleteById, tareaGetById } from '../../../api/tarea'
 import Select from 'react-select';
+import ModalIS from '../../../components/Modal';
 
 export default function TareaABM() {
   const { state, dispatch } = useContext(TareaEstado);
@@ -15,6 +16,20 @@ export default function TareaABM() {
   const [estadosOpciones, setEstadosOpciones] = useState([])
   const [tareaAsignar, setTareaAsignar] = useState()
   const [tareaPadre, setTareaPadre] = useState([])
+  const [showAlerta, setShowAlerta] = useState(false)
+  const [alerta, setAlerta] = useState({ mensaje: "", type: "" })
+  const [showModal, setShowModal] = useState(false);
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "#172b4d",
+    }),
+  }
+
+  useEffect(() => {
+    alerta.mensaje.length > 0 ? setShowAlerta(true) : setShowAlerta(false)
+  }, [alerta])
 
   const buscarTareas = async () => {
     const respuesta = await tareaGetAll()
@@ -23,13 +38,14 @@ export default function TareaABM() {
   }
 
   const cargarEstados = async () => {
-    setEstadosOpciones([{ value: "iniciado", label: "Iniciado" },
-    { value: "pendiente", label: "Pendiente" }])
+    setEstadosOpciones([{ value: "pendiente", label: "Pendiente" },
+    { value: "iniciado", label: "Iniciado" },
+    { value: "concluido", label: "Concluido" }])
   }
 
-  const buscarTareaPadre = async () => {
-    if (valoresIniciales.id_tarea_padre) {
-      const respuesta = await tareaGetById(valoresIniciales.id_tarea_padre)
+  const buscarTareaPadre = async (id_tarea_padre) => {
+    if (id_tarea_padre) {
+      const respuesta = await tareaGetById(id_tarea_padre)
       setTareaPadre(respuesta)
     }
   }
@@ -42,7 +58,7 @@ export default function TareaABM() {
     buscarTareas()
     cargarEstados()
     if (valoresIniciales.id) {
-      buscarTareaPadre()
+      buscarTareaPadre(valoresIniciales.id_tarea_padre)
       setTareaLocal(valoresIniciales)
     }
   }, [valoresIniciales])
@@ -53,43 +69,55 @@ export default function TareaABM() {
   const crearTarea = async () => {
     try {
       if (!tareaLocal.descripcion || tareaLocal.descripcion.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar descripción");
       }
       if (!tareaLocal.estado || tareaLocal.estado.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar estado");
       }
-      const cre = await tareaCrear(tareaLocal)
+      await tareaCrear(tareaLocal)
+      setAlerta({ mensaje: "Creado con éxito", type: "success" })
       const creado = await tareaGetByDescripcion(tareaLocal.descripcion)
       actualizarSelecion(creado[0])
       setTareaLocal({})
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
   const editarTarea = async () => {
     try {
       if (!tareaLocal.descripcion || tareaLocal.descripcion.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar descripción");
       }
       if (!tareaLocal.estado || tareaLocal.estado.length === 0) {
-        throw new Error("sin datos");
+        throw new Error("Ingresar estado");
       }
-      await tareaActualizar({ ...tareaLocal, id: valoresIniciales.id })
+      await tareaActualizar({ ...tareaLocal, id: valoresIniciales.id, version: valoresIniciales.version + 1 })
+      setAlerta({ mensaje: "Actualizado con éxito", type: "info" })
     } catch (error) {
-      console.log(error.message)
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
+  }
+
+  const seleccionarTareaEliminar = () => {
+    setShowModal(true)
   }
 
   const eliminarTarea = async () => {
     try {
       await tareaDeleteById(valoresIniciales.id)
+      setShowModal(false)
       actualizarSelecion({})
       setTareaLocal({})
       setTareaPadre([])
+      mostrarBuscador()
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
+  }
+
+  const ocultarModal = () => {
+    setShowModal(false)
   }
 
   const cancelar = () => {
@@ -99,10 +127,14 @@ export default function TareaABM() {
 
   const asignarTareaPadre = async () => {
     try {
+      if (!tareaAsignar) {
+        throw Error("Favor asignar una tarea padre")
+      }
       await tareaActualizar({ id: valoresIniciales.id, id_tarea_padre: tareaAsignar })
-      buscarTareaPadre();
+      setAlerta({ mensaje: "Asignado con éxito", type: "success" })
+      buscarTareaPadre(tareaAsignar);
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
@@ -113,14 +145,22 @@ export default function TareaABM() {
   const deshabilitar = async (id) => {
     try {
       await tareaActualizar({ id, id_tarea_padre: null })
-      buscarTareaPadre();
+      setAlerta({ mensaje: "Proyecto eliminado con éxito", type: "info" })
+      buscarTareaPadre(null);
     } catch (error) {
-      console.log("ocurrio un error")
+      setAlerta({ mensaje: error.message, type: "danger" })
     }
   }
 
   return (
-    <div>
+    <div className="main">
+      <div className="container-sm">
+        <Alert color={alerta.type} isOpen={showAlerta} toggle={() => setAlerta({ mensaje: "", type: "" })}>
+          <span>
+            {alerta.mensaje}
+          </span>
+        </Alert>
+      </div>
       <Row className="justify-content-center">
         <Col lg="6" xl="6">
           <Card className="card-user">
@@ -149,6 +189,7 @@ export default function TareaABM() {
                         onChange={(seleccion) => setTareaLocal({ ...tareaLocal, estado: seleccion.value })}
                         options={estadosOpciones}
                         name="estado"
+                        styles={customStyles}
                       />
                     </FormGroup>
                   </Col>
@@ -158,7 +199,7 @@ export default function TareaABM() {
                     valoresIniciales.id ?
                       <>
                         <Button size="sm" onClick={() => editarTarea()}> Editar </Button>
-                        <Button className="btn-danger" size="sm" onClick={() => eliminarTarea()}> Eliminar </Button>
+                        <Button className="btn-danger" size="sm" onClick={() => seleccionarTareaEliminar()}> Eliminar </Button>
                       </> :
                       <Button size="sm" onClick={() => crearTarea()}> Crear </Button>
                   }
@@ -187,10 +228,11 @@ export default function TareaABM() {
                     options={selectOpciones}
                     onChange={(seleccion) => setTareaAsignar(seleccion.value)}
                     name="tarea"
+                    styles={customStyles}
                   />
                 </Col>
                 <Col lg="4" xl="4">
-                  <Button size="sm" onClick={asignarTareaPadre}>Asignar tarea</Button>
+                  <Button size="sm" disabled={!valoresIniciales.id} onClick={asignarTareaPadre}>Asignar tarea</Button>
                 </Col>
               </Row>
               <Row>
@@ -226,6 +268,12 @@ export default function TareaABM() {
           </Card>
         </Col>
       </Row>
+      <ModalIS
+        mostrar={showModal}
+        eventoAceptar={eliminarTarea}
+        eventoCancelar={ocultarModal}
+        titulo="Atención"
+        cuerpo="¿Desea eliminar?" />
     </div>
 
   )
