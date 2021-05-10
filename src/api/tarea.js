@@ -1,6 +1,7 @@
 import { server } from "../constantes/constantes"
 import { lineaBaseTareaGetByTareaId } from "./lineaBaseTarea";
 const servicio = "tarea";
+const servicioEstadoView = "tarea_estado_view";
 
 const tareaGetAll = async () => {
   var where = "?activo=is.true"
@@ -23,7 +24,7 @@ const tareaGetByDescripcion = async (descripcion) => {
   };
 
   return await fetch(url, requestOptions)
-  .then(response => response.json())
+    .then(response => response.json())
 };
 
 const tareaGetById = async (tarea_id) => {
@@ -54,7 +55,7 @@ const tareaCrear = async (datos) => {
 const tareaActualizar = async (datos) => {
   const lineaBaseTarea = await lineaBaseTareaGetByTareaId(datos.id)
   if (lineaBaseTarea.length > 0) {
-    throw new Error ("Tarea no puede editarse. Está asignada a una LB.")
+    throw new Error("Tarea no puede editarse. Está asignada a una LB.")
   }
   var where = `?id=eq.${datos.id}`
   const url = `${server}/${servicio}${where}`;
@@ -84,7 +85,7 @@ const tareaDeleteById = async (id) => {
 };
 
 const tareaGetNOTIN = async (notIn) => {
-  var where = `?id=not.in.(${notIn})`
+  var where = `?and=(activo.is.true,id.not.in.(${notIn}))`
   const url = `${server}/${servicio}${where}`;
   var requestOptions = {
     method: 'GET',
@@ -95,5 +96,19 @@ const tareaGetNOTIN = async (notIn) => {
     .then(response => response.json())
 };
 
-export { tareaGetAll, tareaGetByDescripcion, tareaCrear, 
-  tareaActualizar, tareaDeleteById, tareaGetById, tareaGetNOTIN };
+const tareaEstadoViewGetAll = async () => {
+  const url = `${server}/${servicioEstadoView}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+export {
+  tareaGetAll, tareaGetByDescripcion, tareaCrear,
+  tareaActualizar, tareaDeleteById, tareaGetById, tareaGetNOTIN,
+  tareaEstadoViewGetAll
+};

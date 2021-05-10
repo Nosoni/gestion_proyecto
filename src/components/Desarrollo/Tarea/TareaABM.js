@@ -38,8 +38,9 @@ export default function TareaABM() {
   }
 
   const cargarEstados = async () => {
-    setEstadosOpciones([{ value: "iniciado", label: "Iniciado" },
-    { value: "pendiente", label: "Pendiente" }])
+    setEstadosOpciones([{ value: "pendiente", label: "Pendiente" },
+    { value: "iniciado", label: "Iniciado" },
+    { value: "concluido", label: "Concluido" }])
   }
 
   const buscarTareaPadre = async (id_tarea_padre) => {

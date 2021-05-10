@@ -1,5 +1,6 @@
 import { server } from "../constantes/constantes"
 const servicio = "linea_base";
+const servicioEstadoView = "linea_base_estado_view"
 
 const lineaBaseGetByLB = async (nombre) => {
   var where = `?and=(activo.is.true,nombre.eq.${nombre})`
@@ -26,4 +27,15 @@ const lineaBaseCrear = async (lineaBase) => {
   return await fetch(url, requestOptions)
 };
 
-export { lineaBaseGetByLB, lineaBaseCrear };
+const lineaBaseEstadoViewGetAll = async () => {
+  const url = `${server}/${servicioEstadoView}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+};
+
+export { lineaBaseGetByLB, lineaBaseCrear, lineaBaseEstadoViewGetAll };

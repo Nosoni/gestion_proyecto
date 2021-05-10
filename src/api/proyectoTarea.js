@@ -41,4 +41,20 @@ const proyectoTareaDeshabilitar = async (id) => {
   return await fetch(url, requestOptions)
 }
 
-export { proyectoTareaViewGetByProyecto, proyectoTareaAsignar, proyectoTareaDeshabilitar };
+const proyectoTareaViewGetAllSelect = async (select) => {
+  var where = `?select=${select}`
+  const url = `${server}/${servicioView}${where}`;
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  return await fetch(url, requestOptions)
+    .then(response => response.json())
+}
+
+
+export {
+  proyectoTareaViewGetByProyecto, proyectoTareaAsignar, proyectoTareaDeshabilitar,
+  proyectoTareaViewGetAllSelect
+};

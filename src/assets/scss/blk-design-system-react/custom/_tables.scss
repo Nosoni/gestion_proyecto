@@ -156,8 +156,13 @@
 }
 
 .table-responsive{
-  overflow: scroll;
   padding-bottom: 10px;
+  height: 100%;
+  overflow-y:scroll;
+}
+
+.table-responsive::-webkit-scrollbar{
+  width: 7px;
 }
 
 #tables .table-responsive{
@@ -165,7 +170,6 @@
 }
 
 // datatables
-
 .dataTables_wrapper {
   .table-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(0,0,0,.05);

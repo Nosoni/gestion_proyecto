@@ -62,8 +62,9 @@ export default function LineaBaseBuscador() {
   }, [tareasAsignar])
 
   const cargarEstados = async () => {
-    setEstadosOpciones([{ value: "iniciado", label: "Iniciado" },
-    { value: "pendiente", label: "Pendiente" }])
+    setEstadosOpciones([{ value: "pendiente", label: "Pendiente" },
+    { value: "iniciado", label: "Iniciado" },
+    { value: "concluido", label: "Concluido" }])
   }
 
   const buscarLineaBase = async () => {
