@@ -4,6 +4,7 @@ import { useSesion } from '../../context';
 import { usuarioGetByUsuarioPass } from '../../api/usuario'
 import { usuarioRolGetByUsuario } from '../../api/usuarioRol';
 import { rolPermisoViewGetByRol } from '../../api/rolPermiso';
+import "assets/css/nucleo-icons.css";
 
 export default function Login(props) {
   //variable global
@@ -64,6 +65,11 @@ export default function Login(props) {
       </div>
       <Col className="pt-md row align-items-center justify-content-center">
         <Card className="card-log bg-white">
+          <Row className="justify-content-center"> 
+            <div class="icon" style={{color:'#fc525c'}}>
+              <i class="fas fa-user-alt fa-5x"></i>
+            </div>
+          </Row> 
           <Form >
             <Row className="justify-content-center">
               <Col md="6">
@@ -88,7 +94,7 @@ export default function Login(props) {
                 onClick={login}
               >
                 Ingresar
-              </Button>
+              </Button> 
             </Row>
           </Form>
         </Card>
