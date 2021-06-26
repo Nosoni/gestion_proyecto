@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminNav from "../../components/Administracion/AdminNav"
 import { Route, Switch, Redirect } from "react-router-dom";
 import Usuario from "../../components/Administracion/Usuario/Usuario";
 import Rol from "../../components/Administracion/Rol/Rol";
 
 export default function Administracion(props) {
+  useEffect(() => { !localStorage.getItem("usuario") && props.history.push("/login") }, [])
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/administracion") {

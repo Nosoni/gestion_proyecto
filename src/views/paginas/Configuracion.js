@@ -2,8 +2,11 @@ import React from "react";
 import AdminNav from "../../components/Administracion/AdminNav"
 import { Route, Switch, Redirect } from "react-router-dom";
 import LineaBase from "../../components/Configuracion/LineaBase/LineaBase";
+import { useEffect } from "react/cjs/react.development";
 
 export default function Configuracion(props) {
+  useEffect(() => { !localStorage.getItem("usuario") && props.history.push("/login") }, [])
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/configuracion") {

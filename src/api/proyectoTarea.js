@@ -3,7 +3,7 @@ const servicio = "proyecto_tarea";
 const servicioView = "proyecto_tarea_view";
 
 const proyectoTareaViewGetByProyecto = async (proyecto_id) => {
-  var where = `?and=(proyecto_tarea_activo.is.true,proyecto_id.eq.${proyecto_id})`
+  var where = `?proyecto_id=eq.${proyecto_id}`
   const url = `${server}/${servicioView}${where}`;
   var requestOptions = {
     method: 'GET',

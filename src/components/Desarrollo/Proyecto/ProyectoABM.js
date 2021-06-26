@@ -225,6 +225,7 @@ export default function ProyectoABM() {
                     </tr>
                   </thead>
                   <tbody>
+                    {console.log(tareasDelProyecto)}
                     {
                       tareasDelProyecto.length > 0 ?
                         tareasDelProyecto.map(dato =>

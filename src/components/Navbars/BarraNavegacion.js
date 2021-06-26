@@ -6,10 +6,8 @@ import {
   UncontrolledDropdown, NavbarBrand, Navbar, NavItem, NavLink, Nav,
   Container, Row, Col,
 } from "reactstrap";
-import { useSesion } from '../../context';
 
 export default function BaraNavegacion() {
-  let sesion = useSesion();
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [collapseOut, setCollapseOut] = React.useState("");
   const [color, setColor] = React.useState("navbar-transparent");
@@ -42,10 +40,9 @@ export default function BaraNavegacion() {
   const onCollapseExited = () => {
     setCollapseOut("");
   };
-  
+
   const cerrarSeion = () => {
-    sesion.actualizarValores({ type: "usuario", payload: "" })
-    sesion.actualizarValores({ type: "permisos", payload: [] })
+    localStorage.clear()
   }
   return (
     <Navbar className={"fixed-top " + color} color-on-scroll="100" expand="lg">

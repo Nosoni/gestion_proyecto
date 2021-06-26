@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminNav from "../../components/Administracion/AdminNav"
 import { Route, Switch, Redirect } from "react-router-dom";
 import Proyecto from "../../components/Desarrollo/Proyecto/Proyecto";
 import Tarea from "../../components/Desarrollo/Tarea/Tarea";
 
 export default function Desarrollo(props) {
+  useEffect(() => { !localStorage.getItem("usuario") && props.history.push("/login") }, [])
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/desarrollo") {

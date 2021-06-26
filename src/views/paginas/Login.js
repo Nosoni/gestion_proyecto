@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Card, Row, Col, FormGroup, Input, Button, Alert } from 'reactstrap'
-import { useSesion } from '../../context';
 import { usuarioGetByUsuarioPass } from '../../api/usuario'
 import { usuarioRolGetByUsuario } from '../../api/usuarioRol';
 import { rolPermisoViewGetByRol } from '../../api/rolPermiso';
 
 export default function Login(props) {
   //variable global
-  let sesion = useSesion();
   //variable local para objeto tipo usuario
   const [usuario, setUsuario] = useState({})
   const [error, setError] = useState("")
@@ -34,13 +32,15 @@ export default function Login(props) {
     }
     const response = await usuarioGetByUsuarioPass(usuario);
     if (response.length > 0) {
-      sesion.actualizarValores({ type: "usuario", payload: response[0].usuario })
+      //sesion.actualizarValores({ type: "usuario", payload: response[0].usuario })
+      localStorage.setItem("usuario", response[0].usuario)
       const usuarioRol = await usuarioRolGetByUsuario(response[0].id)
       if (usuarioRol.length > 0) {
-        const permisos = await rolPermisoViewGetByRol(usuarioRol[0].rol_id).then(respuesta => {
-          return respuesta.map(registro => registro.permiso_nombre)
-        })
-        sesion.actualizarValores({ type: "permisos", payload: permisos })
+        await rolPermisoViewGetByRol(usuarioRol[0].rol_id)
+          .then(permisos => {
+            permisos.map(permiso => localStorage.setItem(permiso.permiso_nombre, permiso.permiso_nombre))
+          })
+        //sesion.actualizarValores({ type: "permisos", payload: permisos })
       }
       props.history.push("/inicio")
     }

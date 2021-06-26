@@ -47,6 +47,8 @@ export default function TareaABM() {
     if (id_tarea_padre) {
       const respuesta = await tareaGetById(id_tarea_padre)
       setTareaPadre(respuesta)
+    } else {
+      setTareaPadre([])
     }
   }
 
@@ -138,15 +140,15 @@ export default function TareaABM() {
     }
   }
 
-  const deshabilitarTareaPadre = (id) => e => {
-    deshabilitar(id)
+  const deshabilitarTareaPadre = () => e => {
+    deshabilitar()
   }
 
-  const deshabilitar = async (id) => {
+  const deshabilitar = async () => {
     try {
-      await tareaActualizar({ id, id_tarea_padre: null })
-      setAlerta({ mensaje: "Proyecto eliminado con éxito", type: "info" })
-      buscarTareaPadre(null);
+      await tareaActualizar({ id: valoresIniciales.id, id_tarea_padre: null })
+      setAlerta({ mensaje: "Tarea eliminada con éxito", type: "info" })
+      buscarTareaPadre(null)
     } catch (error) {
       setAlerta({ mensaje: error.message, type: "danger" })
     }
@@ -166,7 +168,7 @@ export default function TareaABM() {
           <Card className="card-user">
             <CardHeader className="card-header">
               FORMULARIO TAREA
-          </CardHeader>
+            </CardHeader>
             <CardBody>
               <Form>
                 <Row className="justify-content-center">
@@ -215,7 +217,7 @@ export default function TareaABM() {
           <Card className="card-user">
             <CardHeader className="card-header">
               TAREA PADRE
-          </CardHeader>
+            </CardHeader>
             <CardBody>
               <Row className="align-items-center">
                 <Col lg="1" xl="1">
@@ -232,7 +234,7 @@ export default function TareaABM() {
                   />
                 </Col>
                 <Col lg="4" xl="4">
-                  <Button size="sm" disabled={!valoresIniciales.id} onClick={asignarTareaPadre}>Asignar tarea</Button>
+                  <Button size="sm" disabled={!valoresIniciales.id} onClick={() => asignarTareaPadre()}>Asignar tarea</Button>
                 </Col>
               </Row>
               <Row>
@@ -251,7 +253,7 @@ export default function TareaABM() {
                           <tr key={dato.id}>
                             <td> {dato.descripcion} </td>
                             <td> {dato.estado} </td>
-                            <td> <Button size="sm" onClick={deshabilitarTareaPadre(dato.id)}>Eliminar</Button> </td>
+                            <td> <Button size="sm" onClick={deshabilitarTareaPadre()}>Eliminar</Button> </td>
                           </tr>) :
                         <>
                           <tr>
